@@ -12,6 +12,8 @@
 #include "Scene.h"
 #include "ScreenShot.h"
 
+// #define ENABLE_CAPTURE_MOVIE
+
 // static
 Application* Application::self = NULL;
 
@@ -209,8 +211,10 @@ void Application::OnDisplay( void )
     glPopMatrix();
     glPopAttrib();
 
+#ifdef ENABLE_CAPTURE_MOVIE
     if ( self->capture_movie && !self->capture_screen )
         self->capture_screen = true;
+#endif // ENABLE_CAPTURE_MOVIE
 
     if ( self->capture_screen )
     {
