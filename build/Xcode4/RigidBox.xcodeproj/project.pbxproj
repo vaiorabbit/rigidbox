@@ -1,0 +1,267 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		553F6B6A13CDA38C0083F1FA /* rbCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553F6B6613CDA38C0083F1FA /* rbCollision.cpp */; };
+		553F6B6B13CDA38C0083F1FA /* rbEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553F6B6713CDA38C0083F1FA /* rbEnvironment.cpp */; };
+		553F6B6C13CDA38C0083F1FA /* rbRigidBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553F6B6813CDA38C0083F1FA /* rbRigidBody.cpp */; };
+		553F6B6D13CDA38C0083F1FA /* rbSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 553F6B6913CDA38C0083F1FA /* rbSolver.cpp */; };
+		553F6B9B13CDB0AA0083F1FA /* rbCollision.h in Headers */ = {isa = PBXBuildFile; fileRef = 553F6B9413CDB0AA0083F1FA /* rbCollision.h */; };
+		553F6B9C13CDB0AA0083F1FA /* rbEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = 553F6B9513CDB0AA0083F1FA /* rbEnvironment.h */; };
+		553F6B9D13CDB0AA0083F1FA /* rbMath.h in Headers */ = {isa = PBXBuildFile; fileRef = 553F6B9613CDB0AA0083F1FA /* rbMath.h */; };
+		553F6B9E13CDB0AA0083F1FA /* rbRigidBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 553F6B9713CDB0AA0083F1FA /* rbRigidBody.h */; };
+		553F6B9F13CDB0AA0083F1FA /* rbSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 553F6B9813CDB0AA0083F1FA /* rbSolver.h */; };
+		553F6BA013CDB0AA0083F1FA /* rbTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 553F6B9913CDB0AA0083F1FA /* rbTypes.h */; };
+		553F6BA113CDB0AA0083F1FA /* RigidBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 553F6B9A13CDB0AA0083F1FA /* RigidBox.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		553F6B6613CDA38C0083F1FA /* rbCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rbCollision.cpp; sourceTree = "<group>"; };
+		553F6B6713CDA38C0083F1FA /* rbEnvironment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rbEnvironment.cpp; sourceTree = "<group>"; };
+		553F6B6813CDA38C0083F1FA /* rbRigidBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rbRigidBody.cpp; sourceTree = "<group>"; };
+		553F6B6913CDA38C0083F1FA /* rbSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rbSolver.cpp; sourceTree = "<group>"; };
+		553F6B9413CDB0AA0083F1FA /* rbCollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rbCollision.h; sourceTree = "<group>"; };
+		553F6B9513CDB0AA0083F1FA /* rbEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rbEnvironment.h; sourceTree = "<group>"; };
+		553F6B9613CDB0AA0083F1FA /* rbMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rbMath.h; sourceTree = "<group>"; };
+		553F6B9713CDB0AA0083F1FA /* rbRigidBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rbRigidBody.h; sourceTree = "<group>"; };
+		553F6B9813CDB0AA0083F1FA /* rbSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rbSolver.h; sourceTree = "<group>"; };
+		553F6B9913CDB0AA0083F1FA /* rbTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rbTypes.h; sourceTree = "<group>"; };
+		553F6B9A13CDB0AA0083F1FA /* RigidBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RigidBox.h; sourceTree = "<group>"; };
+		55B71EE613BD7CCA005CBA8A /* RigidBox.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = RigidBox.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B71EEA13BD7CCA005CBA8A /* RigidBox-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RigidBox-Prefix.pch"; sourceTree = "<group>"; };
+		55B71EEB13BD7CCA005CBA8A /* RigidBoxProj.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RigidBoxProj.xcconfig; sourceTree = "<group>"; };
+		55B71EEC13BD7CCA005CBA8A /* RigidBoxTarget.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RigidBoxTarget.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		55B71EE313BD7CCA005CBA8A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		553F6B5713CDA31C0083F1FA /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				553F6B9413CDB0AA0083F1FA /* rbCollision.h */,
+				553F6B9513CDB0AA0083F1FA /* rbEnvironment.h */,
+				553F6B9613CDB0AA0083F1FA /* rbMath.h */,
+				553F6B9713CDB0AA0083F1FA /* rbRigidBody.h */,
+				553F6B9813CDB0AA0083F1FA /* rbSolver.h */,
+				553F6B9913CDB0AA0083F1FA /* rbTypes.h */,
+				553F6B9A13CDB0AA0083F1FA /* RigidBox.h */,
+			);
+			name = Include;
+			path = ../../include/RigidBox;
+			sourceTree = "<group>";
+		};
+		553F6B5913CDA33C0083F1FA /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				553F6B6613CDA38C0083F1FA /* rbCollision.cpp */,
+				553F6B6713CDA38C0083F1FA /* rbEnvironment.cpp */,
+				553F6B6813CDA38C0083F1FA /* rbRigidBody.cpp */,
+				553F6B6913CDA38C0083F1FA /* rbSolver.cpp */,
+			);
+			name = Source;
+			path = ../../source;
+			sourceTree = "<group>";
+		};
+		55B71EDB13BD7CCA005CBA8A = {
+			isa = PBXGroup;
+			children = (
+				553F6B5713CDA31C0083F1FA /* Include */,
+				553F6B5913CDA33C0083F1FA /* Source */,
+				55B71EE813BD7CCA005CBA8A /* RigidBox */,
+				55B71EE713BD7CCA005CBA8A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		55B71EE713BD7CCA005CBA8A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				55B71EE613BD7CCA005CBA8A /* RigidBox.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55B71EE813BD7CCA005CBA8A /* RigidBox */ = {
+			isa = PBXGroup;
+			children = (
+				55B71EEB13BD7CCA005CBA8A /* RigidBoxProj.xcconfig */,
+				55B71EEC13BD7CCA005CBA8A /* RigidBoxTarget.xcconfig */,
+				55B71EE913BD7CCA005CBA8A /* Supporting Files */,
+			);
+			path = RigidBox;
+			sourceTree = "<group>";
+		};
+		55B71EE913BD7CCA005CBA8A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				55B71EEA13BD7CCA005CBA8A /* RigidBox-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		55B71EE413BD7CCA005CBA8A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553F6B9B13CDB0AA0083F1FA /* rbCollision.h in Headers */,
+				553F6B9C13CDB0AA0083F1FA /* rbEnvironment.h in Headers */,
+				553F6B9D13CDB0AA0083F1FA /* rbMath.h in Headers */,
+				553F6B9E13CDB0AA0083F1FA /* rbRigidBody.h in Headers */,
+				553F6B9F13CDB0AA0083F1FA /* rbSolver.h in Headers */,
+				553F6BA013CDB0AA0083F1FA /* rbTypes.h in Headers */,
+				553F6BA113CDB0AA0083F1FA /* RigidBox.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		55B71EE513BD7CCA005CBA8A /* RigidBox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55B71EF413BD7CCA005CBA8A /* Build configuration list for PBXNativeTarget "RigidBox" */;
+			buildPhases = (
+				55B71EE213BD7CCA005CBA8A /* Sources */,
+				55B71EE313BD7CCA005CBA8A /* Frameworks */,
+				55B71EE413BD7CCA005CBA8A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RigidBox;
+			productName = RigidBox;
+			productReference = 55B71EE613BD7CCA005CBA8A /* RigidBox.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55B71EDD13BD7CCA005CBA8A /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 55B71EE013BD7CCA005CBA8A /* Build configuration list for PBXProject "RigidBox" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 55B71EDB13BD7CCA005CBA8A;
+			productRefGroup = 55B71EE713BD7CCA005CBA8A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				55B71EE513BD7CCA005CBA8A /* RigidBox */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		55B71EE213BD7CCA005CBA8A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				553F6B6A13CDA38C0083F1FA /* rbCollision.cpp in Sources */,
+				553F6B6B13CDA38C0083F1FA /* rbEnvironment.cpp in Sources */,
+				553F6B6C13CDA38C0083F1FA /* rbRigidBody.cpp in Sources */,
+				553F6B6D13CDA38C0083F1FA /* rbSolver.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		55B71EF213BD7CCA005CBA8A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		55B71EF313BD7CCA005CBA8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		55B71EF513BD7CCA005CBA8A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		55B71EF613BD7CCA005CBA8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		55B71EE013BD7CCA005CBA8A /* Build configuration list for PBXProject "RigidBox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B71EF213BD7CCA005CBA8A /* Debug */,
+				55B71EF313BD7CCA005CBA8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55B71EF413BD7CCA005CBA8A /* Build configuration list for PBXNativeTarget "RigidBox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B71EF513BD7CCA005CBA8A /* Debug */,
+				55B71EF613BD7CCA005CBA8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55B71EDD13BD7CCA005CBA8A /* Project object */;
+}

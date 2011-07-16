@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RigidBox", "..\..\..\build\VS2010\RigidBox.vcxproj", "{E4E83331-2797-435E-B893-2FA9DD598D5A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoViewer", "DemoViewer\DemoViewer.vcxproj", "{1F6FE925-A3D4-454E-885A-CFCD25E3574F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E4E83331-2797-435E-B893-2FA9DD598D5A} = {E4E83331-2797-435E-B893-2FA9DD598D5A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CollisionDemo", "CollisionDemo\CollisionDemo.vcxproj", "{CEEE932A-4145-4499-8EDE-2750CB57ED13}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F6FE925-A3D4-454E-885A-CFCD25E3574F} = {1F6FE925-A3D4-454E-885A-CFCD25E3574F}
+		{E4E83331-2797-435E-B893-2FA9DD598D5A} = {E4E83331-2797-435E-B893-2FA9DD598D5A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StackDemo", "StackDemo\StackDemo.vcxproj", "{79E920CB-4179-4C78-BFB2-ED86839BDB85}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F6FE925-A3D4-454E-885A-CFCD25E3574F} = {1F6FE925-A3D4-454E-885A-CFCD25E3574F}
+		{E4E83331-2797-435E-B893-2FA9DD598D5A} = {E4E83331-2797-435E-B893-2FA9DD598D5A}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4E83331-2797-435E-B893-2FA9DD598D5A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E4E83331-2797-435E-B893-2FA9DD598D5A}.Debug|Win32.Build.0 = Debug|Win32
+		{E4E83331-2797-435E-B893-2FA9DD598D5A}.Release|Win32.ActiveCfg = Release|Win32
+		{E4E83331-2797-435E-B893-2FA9DD598D5A}.Release|Win32.Build.0 = Release|Win32
+		{1F6FE925-A3D4-454E-885A-CFCD25E3574F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1F6FE925-A3D4-454E-885A-CFCD25E3574F}.Debug|Win32.Build.0 = Debug|Win32
+		{1F6FE925-A3D4-454E-885A-CFCD25E3574F}.Release|Win32.ActiveCfg = Release|Win32
+		{1F6FE925-A3D4-454E-885A-CFCD25E3574F}.Release|Win32.Build.0 = Release|Win32
+		{CEEE932A-4145-4499-8EDE-2750CB57ED13}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CEEE932A-4145-4499-8EDE-2750CB57ED13}.Debug|Win32.Build.0 = Debug|Win32
+		{CEEE932A-4145-4499-8EDE-2750CB57ED13}.Release|Win32.ActiveCfg = Release|Win32
+		{CEEE932A-4145-4499-8EDE-2750CB57ED13}.Release|Win32.Build.0 = Release|Win32
+		{79E920CB-4179-4C78-BFB2-ED86839BDB85}.Debug|Win32.ActiveCfg = Debug|Win32
+		{79E920CB-4179-4C78-BFB2-ED86839BDB85}.Debug|Win32.Build.0 = Debug|Win32
+		{79E920CB-4179-4C78-BFB2-ED86839BDB85}.Release|Win32.ActiveCfg = Release|Win32
+		{79E920CB-4179-4C78-BFB2-ED86839BDB85}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:StackDemo/StackDemo.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:CollisionDemo/CollisionDemo.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:DemoViewer/DemoViewer.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../../../build/Xcode4/RigidBox.xcodeproj">
+   </FileRef>
+</Workspace>

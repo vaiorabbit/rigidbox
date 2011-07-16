@@ -1,0 +1,213 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5512BDD413CDDE050075AF5C /* StackDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5512BDD313CDDE050075AF5C /* StackDemo.cpp */; };
+		5512BDD713CDDE1D0075AF5C /* DemoViewer.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5512BDD513CDDE1D0075AF5C /* DemoViewer.dylib */; };
+		5512BDD813CDDE1D0075AF5C /* RigidBox.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5512BDD613CDDE1D0075AF5C /* RigidBox.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5512BDC513CDDDCE0075AF5C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5512BDC713CDDDCE0075AF5C /* StackDemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StackDemo; sourceTree = BUILT_PRODUCTS_DIR; };
+		5512BDD313CDDE050075AF5C /* StackDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackDemo.cpp; sourceTree = "<group>"; };
+		5512BDD513CDDE1D0075AF5C /* DemoViewer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = DemoViewer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		5512BDD613CDDE1D0075AF5C /* RigidBox.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = RigidBox.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5512BDC413CDDDCE0075AF5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5512BDD713CDDE1D0075AF5C /* DemoViewer.dylib in Frameworks */,
+				5512BDD813CDDE1D0075AF5C /* RigidBox.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5512BDBC13CDDDCE0075AF5C = {
+			isa = PBXGroup;
+			children = (
+				5512BDD513CDDE1D0075AF5C /* DemoViewer.dylib */,
+				5512BDD613CDDE1D0075AF5C /* RigidBox.dylib */,
+				5512BDCA13CDDDCE0075AF5C /* StackDemo */,
+				5512BDC813CDDDCE0075AF5C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5512BDC813CDDDCE0075AF5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5512BDC713CDDDCE0075AF5C /* StackDemo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5512BDCA13CDDDCE0075AF5C /* StackDemo */ = {
+			isa = PBXGroup;
+			children = (
+				5512BDD313CDDE050075AF5C /* StackDemo.cpp */,
+			);
+			name = StackDemo;
+			path = ../../../StackDemo;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5512BDC613CDDDCE0075AF5C /* StackDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5512BDD013CDDDCE0075AF5C /* Build configuration list for PBXNativeTarget "StackDemo" */;
+			buildPhases = (
+				5512BDC313CDDDCE0075AF5C /* Sources */,
+				5512BDC413CDDDCE0075AF5C /* Frameworks */,
+				5512BDC513CDDDCE0075AF5C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StackDemo;
+			productName = StackDemo;
+			productReference = 5512BDC713CDDDCE0075AF5C /* StackDemo */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5512BDBE13CDDDCE0075AF5C /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 5512BDC113CDDDCE0075AF5C /* Build configuration list for PBXProject "StackDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5512BDBC13CDDDCE0075AF5C;
+			productRefGroup = 5512BDC813CDDDCE0075AF5C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5512BDC613CDDDCE0075AF5C /* StackDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5512BDC313CDDDCE0075AF5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5512BDD413CDDE050075AF5C /* StackDemo.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5512BDCE13CDDDCE0075AF5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../include",
+					"$(SRCROOT)/../../../DemoViewer",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5512BDCF13CDDDCE0075AF5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../include",
+					"$(SRCROOT)/../../../DemoViewer",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5512BDD113CDDDCE0075AF5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5512BDD213CDDDCE0075AF5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5512BDC113CDDDCE0075AF5C /* Build configuration list for PBXProject "StackDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5512BDCE13CDDDCE0075AF5C /* Debug */,
+				5512BDCF13CDDDCE0075AF5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5512BDD013CDDDCE0075AF5C /* Build configuration list for PBXNativeTarget "StackDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5512BDD113CDDDCE0075AF5C /* Debug */,
+				5512BDD213CDDDCE0075AF5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5512BDBE13CDDDCE0075AF5C /* Project object */;
+}

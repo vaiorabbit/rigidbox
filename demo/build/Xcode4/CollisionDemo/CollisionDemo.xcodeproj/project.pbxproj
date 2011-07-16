@@ -1,0 +1,223 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5507461C13BDACA6000C0816 /* CollisionDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5507461B13BDACA6000C0816 /* CollisionDemo.cpp */; };
+		5507461E13BDACF6000C0816 /* DemoViewer.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5507461D13BDACF6000C0816 /* DemoViewer.dylib */; };
+		5507462013BDAD01000C0816 /* RigidBox.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5507461F13BDAD01000C0816 /* RigidBox.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5507460D13BDAC91000C0816 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5507460F13BDAC91000C0816 /* CollisionDemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CollisionDemo; sourceTree = BUILT_PRODUCTS_DIR; };
+		5507461B13BDACA6000C0816 /* CollisionDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionDemo.cpp; sourceTree = "<group>"; };
+		5507461D13BDACF6000C0816 /* DemoViewer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = DemoViewer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		5507461F13BDAD01000C0816 /* RigidBox.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = RigidBox.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5507460C13BDAC91000C0816 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5507462013BDAD01000C0816 /* RigidBox.dylib in Frameworks */,
+				5507461E13BDACF6000C0816 /* DemoViewer.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5507460413BDAC91000C0816 = {
+			isa = PBXGroup;
+			children = (
+				5507461F13BDAD01000C0816 /* RigidBox.dylib */,
+				5507461D13BDACF6000C0816 /* DemoViewer.dylib */,
+				5507461213BDAC91000C0816 /* CollisionDemo */,
+				5507461013BDAC91000C0816 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5507461013BDAC91000C0816 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5507460F13BDAC91000C0816 /* CollisionDemo */,
+			);
+			name = Products;
+			path = CollisionDemo;
+			sourceTree = "<group>";
+		};
+		5507461213BDAC91000C0816 /* CollisionDemo */ = {
+			isa = PBXGroup;
+			children = (
+				5507461B13BDACA6000C0816 /* CollisionDemo.cpp */,
+			);
+			name = CollisionDemo;
+			path = ../../../CollisionDemo;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5507460E13BDAC91000C0816 /* CollisionDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5507461813BDAC91000C0816 /* Build configuration list for PBXNativeTarget "CollisionDemo" */;
+			buildPhases = (
+				5507460B13BDAC91000C0816 /* Sources */,
+				5507460C13BDAC91000C0816 /* Frameworks */,
+				5507460D13BDAC91000C0816 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CollisionDemo;
+			productName = CollisionDemo;
+			productReference = 5507460F13BDAC91000C0816 /* CollisionDemo */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5507460613BDAC91000C0816 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 5507460913BDAC91000C0816 /* Build configuration list for PBXProject "CollisionDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5507460413BDAC91000C0816;
+			productRefGroup = 5507461013BDAC91000C0816 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5507460E13BDAC91000C0816 /* CollisionDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5507460B13BDAC91000C0816 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5507461C13BDACA6000C0816 /* CollisionDemo.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5507461613BDAC91000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../include",
+					"$(SRCROOT)/../../DemoViewer",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5507461713BDAC91000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../include",
+					"$(SRCROOT)/../../DemoViewer",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5507461913BDAC91000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../include",
+					"$(SRCROOT)/../../../DemoViewer",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5507461A13BDAC91000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../../include",
+					"$(SRCROOT)/../../../DemoViewer",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5507460913BDAC91000C0816 /* Build configuration list for PBXProject "CollisionDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5507461613BDAC91000C0816 /* Debug */,
+				5507461713BDAC91000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5507461813BDAC91000C0816 /* Build configuration list for PBXNativeTarget "CollisionDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5507461913BDAC91000C0816 /* Debug */,
+				5507461A13BDAC91000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5507460613BDAC91000C0816 /* Project object */;
+}

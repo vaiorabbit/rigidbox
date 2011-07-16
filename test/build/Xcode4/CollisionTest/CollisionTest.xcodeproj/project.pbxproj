@@ -1,0 +1,222 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5507459513BDA7DA000C0816 /* CollisionTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5507459313BDA7DA000C0816 /* CollisionTest.cpp */; };
+		5507459813BDA93A000C0816 /* RigidBox.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5507459713BDA93A000C0816 /* RigidBox.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5507458513BDA790000C0816 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5507458713BDA790000C0816 /* CollisionTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CollisionTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5507459313BDA7DA000C0816 /* CollisionTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionTest.cpp; sourceTree = "<group>"; };
+		5507459413BDA7DA000C0816 /* TCCollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCCollision.h; sourceTree = "<group>"; };
+		5507459613BDA807000C0816 /* TestFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFramework.h; path = ../../../common/TestFramework.h; sourceTree = "<group>"; };
+		5507459713BDA93A000C0816 /* RigidBox.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = RigidBox.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5507458413BDA790000C0816 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5507459813BDA93A000C0816 /* RigidBox.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5507457C13BDA78F000C0816 = {
+			isa = PBXGroup;
+			children = (
+				5507459713BDA93A000C0816 /* RigidBox.dylib */,
+				5507459613BDA807000C0816 /* TestFramework.h */,
+				5507458A13BDA790000C0816 /* CollisionTest */,
+				5507458813BDA790000C0816 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5507458813BDA790000C0816 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5507458713BDA790000C0816 /* CollisionTest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5507458A13BDA790000C0816 /* CollisionTest */ = {
+			isa = PBXGroup;
+			children = (
+				5507459313BDA7DA000C0816 /* CollisionTest.cpp */,
+				5507459413BDA7DA000C0816 /* TCCollision.h */,
+			);
+			name = CollisionTest;
+			path = ../../../CollisionTest;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5507458613BDA790000C0816 /* CollisionTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5507459013BDA790000C0816 /* Build configuration list for PBXNativeTarget "CollisionTest" */;
+			buildPhases = (
+				5507458313BDA790000C0816 /* Sources */,
+				5507458413BDA790000C0816 /* Frameworks */,
+				5507458513BDA790000C0816 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CollisionTest;
+			productName = CollisionTest;
+			productReference = 5507458713BDA790000C0816 /* CollisionTest */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5507457E13BDA78F000C0816 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 5507458113BDA78F000C0816 /* Build configuration list for PBXProject "CollisionTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5507457C13BDA78F000C0816;
+			productRefGroup = 5507458813BDA790000C0816 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5507458613BDA790000C0816 /* CollisionTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5507458313BDA790000C0816 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5507459513BDA7DA000C0816 /* CollisionTest.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5507458E13BDA790000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../common",
+					"$(SRCROOT)/../../../include",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5507458F13BDA790000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../common",
+					"$(SRCROOT)/../../../include",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5507459113BDA790000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../common",
+					"$(SRCROOT)/../../../../include",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5507459213BDA790000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../common",
+					"$(SRCROOT)/../../../../include",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5507458113BDA78F000C0816 /* Build configuration list for PBXProject "CollisionTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5507458E13BDA790000C0816 /* Debug */,
+				5507458F13BDA790000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5507459013BDA790000C0816 /* Build configuration list for PBXNativeTarget "CollisionTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5507459113BDA790000C0816 /* Debug */,
+				5507459213BDA790000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5507457E13BDA78F000C0816 /* Project object */;
+}

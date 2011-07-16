@@ -1,0 +1,261 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		550069A813CC52C9001ADF1E /* ScreenShot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550069A613CC52C9001ADF1E /* ScreenShot.cpp */; };
+		550069A913CC52C9001ADF1E /* ScreenShot.h in Headers */ = {isa = PBXBuildFile; fileRef = 550069A713CC52C9001ADF1E /* ScreenShot.h */; };
+		550745F713BDABBC000C0816 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550745EF13BDABBC000C0816 /* Application.cpp */; };
+		550745F813BDABBC000C0816 /* Application.h in Headers */ = {isa = PBXBuildFile; fileRef = 550745F013BDABBC000C0816 /* Application.h */; };
+		550745F913BDABBC000C0816 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550745F113BDABBC000C0816 /* Camera.cpp */; };
+		550745FA13BDABBC000C0816 /* Camera.h in Headers */ = {isa = PBXBuildFile; fileRef = 550745F213BDABBC000C0816 /* Camera.h */; };
+		550745FB13BDABBC000C0816 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550745F413BDABBC000C0816 /* Renderer.cpp */; };
+		550745FC13BDABBC000C0816 /* Renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 550745F513BDABBC000C0816 /* Renderer.h */; };
+		550745FD13BDABBC000C0816 /* Scene.h in Headers */ = {isa = PBXBuildFile; fileRef = 550745F613BDABBC000C0816 /* Scene.h */; };
+		550745FF13BDAC34000C0816 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550745FE13BDAC34000C0816 /* GLUT.framework */; };
+		5507460113BDAC48000C0816 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5507460013BDAC48000C0816 /* OpenGL.framework */; };
+		5507460313BDAC50000C0816 /* RigidBox.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5507460213BDAC50000C0816 /* RigidBox.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		550069A613CC52C9001ADF1E /* ScreenShot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenShot.cpp; sourceTree = "<group>"; };
+		550069A713CC52C9001ADF1E /* ScreenShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenShot.h; sourceTree = "<group>"; };
+		550745DE13BDAB97000C0816 /* DemoViewer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = DemoViewer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		550745E213BDAB98000C0816 /* DemoViewer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DemoViewer-Prefix.pch"; sourceTree = "<group>"; };
+		550745E313BDAB98000C0816 /* DemoViewerProj.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = DemoViewerProj.xcconfig; path = ../build/Xcode4/DemoViewer/DemoViewer/DemoViewerProj.xcconfig; sourceTree = "<group>"; };
+		550745E413BDAB98000C0816 /* DemoViewerTarget.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = DemoViewerTarget.xcconfig; path = ../build/Xcode4/DemoViewer/DemoViewer/DemoViewerTarget.xcconfig; sourceTree = "<group>"; };
+		550745EF13BDABBC000C0816 /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
+		550745F013BDABBC000C0816 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
+		550745F113BDABBC000C0816 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		550745F213BDABBC000C0816 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		550745F313BDABBC000C0816 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		550745F413BDABBC000C0816 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
+		550745F513BDABBC000C0816 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
+		550745F613BDABBC000C0816 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		550745FE13BDAC34000C0816 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		5507460013BDAC48000C0816 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		5507460213BDAC50000C0816 /* RigidBox.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = RigidBox.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		550745DB13BDAB97000C0816 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5507460313BDAC50000C0816 /* RigidBox.dylib in Frameworks */,
+				5507460113BDAC48000C0816 /* OpenGL.framework in Frameworks */,
+				550745FF13BDAC34000C0816 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		550745D313BDAB97000C0816 = {
+			isa = PBXGroup;
+			children = (
+				5507460213BDAC50000C0816 /* RigidBox.dylib */,
+				5507460013BDAC48000C0816 /* OpenGL.framework */,
+				550745FE13BDAC34000C0816 /* GLUT.framework */,
+				550745E013BDAB97000C0816 /* DemoViewer */,
+				550745DF13BDAB97000C0816 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		550745DF13BDAB97000C0816 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				550745DE13BDAB97000C0816 /* DemoViewer.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		550745E013BDAB97000C0816 /* DemoViewer */ = {
+			isa = PBXGroup;
+			children = (
+				550069A613CC52C9001ADF1E /* ScreenShot.cpp */,
+				550069A713CC52C9001ADF1E /* ScreenShot.h */,
+				550745EF13BDABBC000C0816 /* Application.cpp */,
+				550745F013BDABBC000C0816 /* Application.h */,
+				550745F113BDABBC000C0816 /* Camera.cpp */,
+				550745F213BDABBC000C0816 /* Camera.h */,
+				550745F313BDABBC000C0816 /* CMakeLists.txt */,
+				550745F413BDABBC000C0816 /* Renderer.cpp */,
+				550745F513BDABBC000C0816 /* Renderer.h */,
+				550745F613BDABBC000C0816 /* Scene.h */,
+				550745E313BDAB98000C0816 /* DemoViewerProj.xcconfig */,
+				550745E413BDAB98000C0816 /* DemoViewerTarget.xcconfig */,
+				550745E113BDAB98000C0816 /* Supporting Files */,
+			);
+			name = DemoViewer;
+			path = ../../../DemoViewer;
+			sourceTree = "<group>";
+		};
+		550745E113BDAB98000C0816 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				550745E213BDAB98000C0816 /* DemoViewer-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			path = ../build/Xcode4/DemoViewer/DemoViewer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		550745DC13BDAB97000C0816 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				550745F813BDABBC000C0816 /* Application.h in Headers */,
+				550745FA13BDABBC000C0816 /* Camera.h in Headers */,
+				550745FC13BDABBC000C0816 /* Renderer.h in Headers */,
+				550745FD13BDABBC000C0816 /* Scene.h in Headers */,
+				550069A913CC52C9001ADF1E /* ScreenShot.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		550745DD13BDAB97000C0816 /* DemoViewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 550745EC13BDAB98000C0816 /* Build configuration list for PBXNativeTarget "DemoViewer" */;
+			buildPhases = (
+				550745DA13BDAB97000C0816 /* Sources */,
+				550745DB13BDAB97000C0816 /* Frameworks */,
+				550745DC13BDAB97000C0816 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DemoViewer;
+			productName = DemoViewer;
+			productReference = 550745DE13BDAB97000C0816 /* DemoViewer.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		550745D513BDAB97000C0816 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 550745D813BDAB97000C0816 /* Build configuration list for PBXProject "DemoViewer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 550745D313BDAB97000C0816;
+			productRefGroup = 550745DF13BDAB97000C0816 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				550745DD13BDAB97000C0816 /* DemoViewer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		550745DA13BDAB97000C0816 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				550745F713BDABBC000C0816 /* Application.cpp in Sources */,
+				550745F913BDABBC000C0816 /* Camera.cpp in Sources */,
+				550745FB13BDABBC000C0816 /* Renderer.cpp in Sources */,
+				550069A813CC52C9001ADF1E /* ScreenShot.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		550745EA13BDAB98000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../include";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		550745EB13BDAB98000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../include";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		550745ED13BDAB98000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../../include";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		550745EE13BDAB98000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../../include";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		550745D813BDAB97000C0816 /* Build configuration list for PBXProject "DemoViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				550745EA13BDAB98000C0816 /* Debug */,
+				550745EB13BDAB98000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		550745EC13BDAB98000C0816 /* Build configuration list for PBXNativeTarget "DemoViewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				550745ED13BDAB98000C0816 /* Debug */,
+				550745EE13BDAB98000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 550745D513BDAB97000C0816 /* Project object */;
+}

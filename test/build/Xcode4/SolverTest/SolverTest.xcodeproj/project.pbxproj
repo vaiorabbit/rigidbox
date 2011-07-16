@@ -1,0 +1,220 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5507466013BDBEAF000C0816 /* RigidBox.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5507465F13BDBEAF000C0816 /* RigidBox.dylib */; };
+		5507466313BDBF07000C0816 /* SolverTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5507466113BDBF07000C0816 /* SolverTest.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5507465113BDBE9F000C0816 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5507465313BDBE9F000C0816 /* SolverTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SolverTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5507465F13BDBEAF000C0816 /* RigidBox.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = RigidBox.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		5507466113BDBF07000C0816 /* SolverTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolverTest.cpp; sourceTree = "<group>"; };
+		5507466213BDBF07000C0816 /* TCSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSolver.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5507465013BDBE9F000C0816 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5507466013BDBEAF000C0816 /* RigidBox.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5507464813BDBE9F000C0816 = {
+			isa = PBXGroup;
+			children = (
+				5507465F13BDBEAF000C0816 /* RigidBox.dylib */,
+				5507465613BDBE9F000C0816 /* SolverTest */,
+				5507465413BDBE9F000C0816 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5507465413BDBE9F000C0816 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5507465313BDBE9F000C0816 /* SolverTest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5507465613BDBE9F000C0816 /* SolverTest */ = {
+			isa = PBXGroup;
+			children = (
+				5507466113BDBF07000C0816 /* SolverTest.cpp */,
+				5507466213BDBF07000C0816 /* TCSolver.h */,
+			);
+			name = SolverTest;
+			path = ../../../SolverTest;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5507465213BDBE9F000C0816 /* SolverTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5507465C13BDBE9F000C0816 /* Build configuration list for PBXNativeTarget "SolverTest" */;
+			buildPhases = (
+				5507464F13BDBE9F000C0816 /* Sources */,
+				5507465013BDBE9F000C0816 /* Frameworks */,
+				5507465113BDBE9F000C0816 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SolverTest;
+			productName = SolverTest;
+			productReference = 5507465313BDBE9F000C0816 /* SolverTest */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5507464A13BDBE9F000C0816 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 5507464D13BDBE9F000C0816 /* Build configuration list for PBXProject "SolverTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5507464813BDBE9F000C0816;
+			productRefGroup = 5507465413BDBE9F000C0816 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5507465213BDBE9F000C0816 /* SolverTest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5507464F13BDBE9F000C0816 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5507466313BDBF07000C0816 /* SolverTest.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5507465A13BDBE9F000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../common",
+					"$(SRCROOT)/../../../include",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5507465B13BDBE9F000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../common",
+					"$(SRCROOT)/../../../include",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5507465D13BDBE9F000C0816 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../common",
+					"$(SRCROOT)/../../../../include",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5507465E13BDBE9F000C0816 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../../common",
+					"$(SRCROOT)/../../../../include",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5507464D13BDBE9F000C0816 /* Build configuration list for PBXProject "SolverTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5507465A13BDBE9F000C0816 /* Debug */,
+				5507465B13BDBE9F000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5507465C13BDBE9F000C0816 /* Build configuration list for PBXNativeTarget "SolverTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5507465D13BDBE9F000C0816 /* Debug */,
+				5507465E13BDBE9F000C0816 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5507464A13BDBE9F000C0816 /* Project object */;
+}
