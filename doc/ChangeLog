@@ -1,3 +1,8 @@
+2012-04-08  vaiorabbit  <http://twitter.com/vaiorabbit>
+
+	* rbMath.h (rbMtx3): Added 'Elem(row, col)' method to avoid the 'row/column major' issue.
+	* rbTypes.h (RIGIDBOX_USE_ROW_MAJOR_MATRIX): Switches the element layout of rbMtx3 from column-major to row-major.
+
 2012-03-24  vaiorabbit  <http://twitter.com/vaiorabbit>
 
 	* Renamed README.txt to README.ja.txt.

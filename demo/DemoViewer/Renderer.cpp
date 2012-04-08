@@ -101,9 +101,9 @@ void Renderer::RenderEnvironment( rbEnvironment* env )
 
         mtxS[0] = 2.0f*ext[0];  mtxS[5] = 2.0f*ext[1];  mtxS[10] = 2.0f*ext[2];
 
-        mtxRT[0] = orn.r[0].e[0];  mtxRT[4] = orn.r[0].e[1];  mtxRT[ 8] = orn.r[0].e[2];  mtxRT[12] = pos[0];
-        mtxRT[1] = orn.r[1].e[0];  mtxRT[5] = orn.r[1].e[1];  mtxRT[ 9] = orn.r[1].e[2];  mtxRT[13] = pos[1];
-        mtxRT[2] = orn.r[2].e[0];  mtxRT[6] = orn.r[2].e[1];  mtxRT[10] = orn.r[2].e[2];  mtxRT[14] = pos[2];
+        mtxRT[0] = orn.Elem(0,0);  mtxRT[4] = orn.Elem(0,1);  mtxRT[ 8] = orn.Elem(0,2);  mtxRT[12] = pos[0];
+        mtxRT[1] = orn.Elem(1,0);  mtxRT[5] = orn.Elem(1,1);  mtxRT[ 9] = orn.Elem(1,2);  mtxRT[13] = pos[1];
+        mtxRT[2] = orn.Elem(2,0);  mtxRT[6] = orn.Elem(2,1);  mtxRT[10] = orn.Elem(2,2);  mtxRT[14] = pos[2];
 
         glPushMatrix();
         glMultMatrixf( mtxRT );
