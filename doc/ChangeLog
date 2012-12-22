@@ -1,3 +1,11 @@
+2012-12-22  vaiorabbit  <http://twitter.com/vaiorabbit>
+
+	* rbRigidBody.cpp: [BUG] Mass property should be considered on velocity update (state.linear_velocity += shape.inv_mass * dt * state.force;).
+	* rbCollision.cpp: [BUG] Penetration depth should be updated on contact point modification.
+	* rbMath.h: Removed rbReal cast operators (rbVec3::rbReal() and rbMtx3::rbReal())
+	* rbMath.h: SetSkewSymmetric() is renamed to SetAsCrossProductMatrix.
+	* rbTypes.h: RIGIDBOX_USE_ROW_MAJOR_MATRIX -> RIGIDBOX_USE_COLUMN_MAJOR_MATRIX
+
 2012-04-08  vaiorabbit  <http://twitter.com/vaiorabbit>
 
 	* rbMath.h (rbMtx3): Added 'Elem(row, col)' method to avoid the 'row/column major' issue.
