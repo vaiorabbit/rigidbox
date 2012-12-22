@@ -59,7 +59,6 @@ struct rbVec3
     void Set( rbReal x_, rbReal y_, rbReal z_ );
     void SetZero();
     void Add( rbReal x_, rbReal y_, rbReal z_ );
-    operator rbReal*();
     rbVec3 operator -() const;
     rbVec3 operator +( const rbVec3& v ) const;
     rbVec3& operator +=( const rbVec3& v );
@@ -85,11 +84,11 @@ struct rbVec3
 
 struct rbMtx3
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    rbVec3 r[3];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     rbVec3 c[3];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    rbVec3 r[3];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 
     rbMtx3();
     rbMtx3( rbReal e00, rbReal e01, rbReal e02,
@@ -101,14 +100,13 @@ struct rbMtx3
     const rbReal& Elem( rbs32 row, rbs32 col ) const;
     rbVec3 Row( rbs32 i ) const;
     rbVec3 Column( rbs32 i ) const;
-    operator rbReal*();
     void Set( rbReal e00, rbReal e01, rbReal e02,
               rbReal e10, rbReal e11, rbReal e12,
               rbReal e20, rbReal e21, rbReal e22 );
     void SetZero();
     void SetIdentity();
     rbMtx3& SetFromAxisAngle( const rbVec3& normalized_axis, rbReal radian );
-    void SetSkewSymmetric( const rbVec3& v );
+    void SetAsCrossProductMatrix( const rbVec3& v );
     void Orthonormalize();
     void Scale( rbReal f );
     rbMtx3 GetTransposed() const;
@@ -167,11 +165,6 @@ inline void rbVec3::SetZero()
 inline void rbVec3::Add( rbReal x_, rbReal y_, rbReal z_ )
 {
     x += x_;  y += y_;  z += z_;
-}
-
-inline rbVec3::operator rbReal*()
-{
-    return &e[0];
 }
 
 inline rbVec3 rbVec3::operator -() const
@@ -283,74 +276,65 @@ inline rbMtx3::rbMtx3( rbReal e00, rbReal e01, rbReal e02,
 
 inline rbMtx3::rbMtx3( const rbMtx3& other )
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    r[0] = other.r[0];
-    r[1] = other.r[1];
-    r[2] = other.r[2];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     c[0] = other.c[0];
     c[1] = other.c[1];
     c[2] = other.c[2];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    r[0] = other.r[0];
+    r[1] = other.r[1];
+    r[2] = other.r[2];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 inline rbMtx3& rbMtx3::operator =( const rbMtx3& other )
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    r[0] = other.r[0];
-    r[1] = other.r[1];
-    r[2] = other.r[2];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     c[0] = other.c[0];
     c[1] = other.c[1];
     c[2] = other.c[2];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    r[0] = other.r[0];
+    r[1] = other.r[1];
+    r[2] = other.r[2];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     return *this;
 }
 
 inline rbReal& rbMtx3::Elem( rbs32 row, rbs32 col )
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    return r[row].e[col];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     return c[col].e[row];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    return r[row].e[col];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 inline const rbReal& rbMtx3::Elem( rbs32 row, rbs32 col ) const
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    return r[row].e[col];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     return c[col].e[row];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    return r[row].e[col];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 inline rbVec3 rbMtx3::Row( rbs32 i ) const
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    return r[i];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     return rbVec3( Elem(i,0), Elem(i,1), Elem(i,2) );
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    return r[i];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 inline rbVec3 rbMtx3::Column( rbs32 i ) const
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    return rbVec3( Elem(0,i), Elem(1,i), Elem(2,i) );
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     return c[i];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-}
-
-inline rbMtx3::operator rbReal*()
-{
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    return (rbReal*)r[0];
 #else
-    return (rbReal*)c[0];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+    return rbVec3( Elem(0,i), Elem(1,i), Elem(2,i) );
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 inline void rbMtx3::Set( rbReal e00, rbReal e01, rbReal e02,
@@ -364,28 +348,28 @@ inline void rbMtx3::Set( rbReal e00, rbReal e01, rbReal e02,
 
 inline void rbMtx3::SetZero()
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    r[0].SetZero();
-    r[1].SetZero();
-    r[2].SetZero();
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     c[0].SetZero();
     c[1].SetZero();
     c[2].SetZero();
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    r[0].SetZero();
+    r[1].SetZero();
+    r[2].SetZero();
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 inline void rbMtx3::SetIdentity()
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    r[0].Set( 1, 0, 0 );
-    r[1].Set( 0, 1, 0 );
-    r[2].Set( 0, 0, 1 );
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     c[0].Set( 1, 0, 0 );
     c[1].Set( 0, 1, 0 );
     c[2].Set( 0, 0, 1 );
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    r[0].Set( 1, 0, 0 );
+    r[1].Set( 0, 1, 0 );
+    r[2].Set( 0, 0, 1 );
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 inline rbMtx3& rbMtx3::SetFromAxisAngle( const rbVec3& axis, rbReal radian )
@@ -410,7 +394,7 @@ inline rbMtx3& rbMtx3::SetFromAxisAngle( const rbVec3& axis, rbReal radian )
     return *this;
 }
 
-inline void rbMtx3::SetSkewSymmetric( const rbVec3& v )
+inline void rbMtx3::SetAsCrossProductMatrix( const rbVec3& v )
 {
     Set(    0, -v.z,  v.y,
           v.z,    0, -v.x,
@@ -467,7 +451,6 @@ inline rbMtx3& rbMtx3::Transpose()
     return *this;
 }
 
-// クラメルの公式による逆行列の計算
 inline rbMtx3 rbMtx3::GetInverse() const
 {
 #define E( row, col ) Elem((row), (col))
@@ -515,15 +498,15 @@ inline rbMtx3 rbMtx3::operator +( const rbMtx3& m ) const
 
 inline rbMtx3& rbMtx3::operator +=( const rbMtx3& m )
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    r[0] += m.r[0];
-    r[1] += m.r[1];
-    r[2] += m.r[2];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     c[0] += m.c[0];
     c[1] += m.c[1];
     c[2] += m.c[2];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    r[0] += m.r[0];
+    r[1] += m.r[1];
+    r[2] += m.r[2];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 
     return *this;
 }
@@ -537,15 +520,15 @@ inline rbMtx3 rbMtx3::operator -( const rbMtx3& m ) const
 
 inline rbMtx3& rbMtx3::operator -=( const rbMtx3& m )
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    r[0] -= m.r[0];
-    r[1] -= m.r[1];
-    r[2] -= m.r[2];
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     c[0] -= m.c[0];
     c[1] -= m.c[1];
     c[2] -= m.c[2];
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    r[0] -= m.r[0];
+    r[1] -= m.r[1];
+    r[2] -= m.r[2];
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 
     return *this;
 }
@@ -559,15 +542,15 @@ inline rbMtx3 rbMtx3::operator *( rbReal f ) const
 
 inline rbMtx3& rbMtx3::operator *=( rbReal f )
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    r[0] *= f;
-    r[1] *= f;
-    r[2] *= f;
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     c[0] *= f;
     c[1] *= f;
     c[2] *= f;
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    r[0] *= f;
+    r[1] *= f;
+    r[2] *= f;
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 
     return *this;
 }
@@ -593,11 +576,11 @@ inline rbMtx3& rbMtx3::operator *=( const rbMtx3& m )
 
 inline rbVec3 rbMtx3::operator *( const rbVec3& v ) const
 {
-#if defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
-    return rbVec3( r[0] * v, r[1] * v, r[2] * v );
-#else
+#if defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
     return rbVec3( Row(0) * v, Row(1) * v, Row(2) * v );
-#endif // defined(RIGIDBOX_USE_ROW_MAJOR_MATRIX)
+#else
+    return rbVec3( r[0] * v, r[1] * v, r[2] * v );
+#endif // defined(RIGIDBOX_USE_COLUMN_MAJOR_MATRIX)
 }
 
 

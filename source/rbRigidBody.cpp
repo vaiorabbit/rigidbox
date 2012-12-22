@@ -97,7 +97,7 @@ void rbRigidBody::UpdateVelocity( rbReal dt )
 {
     if ( IsFixed() ) return;
 
-    state.linear_velocity += dt * state.force;
+    state.linear_velocity += shape.inv_mass * dt * state.force;
 
     state.angular_momentum += dt * state.torque;
     state.angular_velocity = state.inv_inertia_world * state.angular_momentum;
@@ -139,7 +139,7 @@ void rbRigidBody::UpdatePosition( rbReal dt )
     state.position += dt * state.linear_velocity;
 
     rbMtx3 rot;
-    rot.SetSkewSymmetric( state.angular_velocity );
+    rot.SetAsCrossProductMatrix( state.angular_velocity );
     state.orientation += dt * rot * state.orientation;
 
     state.orientation.Orthonormalize();

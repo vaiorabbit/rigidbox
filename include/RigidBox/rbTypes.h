@@ -16,7 +16,7 @@
 ///
 /// Switches the element layout of rbMtx3 from column-major to row-major.
 
-#define RIGIDBOX_USE_ROW_MAJOR_MATRIX
+// #define RIGIDBOX_USE_COLUMN_MAJOR_MATRIX
 
 
 #if defined(RIGIDBOX_USE_DOUBLE_PRECISION)

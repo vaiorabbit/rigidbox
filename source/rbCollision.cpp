@@ -305,10 +305,11 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
         rbVec3 point_out[2];
         ClosestPointOfSegments( colliding_edge, point_out );
 
-        // [TODO] contact_out->Position の調整
-        //        - best_penetration に合わせて point_out[0] または point_out[1] そのものとする
-        //        - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする
+        // contact_out->Position の調整
+        // - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする、もしくは
+        // - best_penetration に合わせて point_out[0] または point_out[1] そのものとする
         contact_out->Position = rbReal(0.5) * (point_out[0] + point_out[1]);
+        best_penetration *= rbReal(0.5);
     }
     break;
     }

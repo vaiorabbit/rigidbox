@@ -93,8 +93,8 @@ public:
 
         SleepStatus()
             : On( false )
-            , GoSleepThresholdLV( rbReal(0.3) )
-            , GoSleepThresholdAV( rbReal(0.3) )
+            , GoSleepThresholdLV( rbReal(0.03) )
+            , GoSleepThresholdAV( rbReal(0.03) )
             , WakeUpThresholdLV( rbReal(1.0) )
             , WakeUpThresholdAV( rbReal(1.0) )
             , GoSleepDuration( rbReal(0.5) )
@@ -104,8 +104,8 @@ public:
         void Clear()
             {
                 On = false;
-                GoSleepThresholdLV = rbReal(0.3);
-                GoSleepThresholdAV = rbReal(0.3);
+                GoSleepThresholdLV = rbReal(0.03);
+                GoSleepThresholdAV = rbReal(0.03);
                 WakeUpThresholdLV = rbReal(1.0);
                 WakeUpThresholdAV = rbReal(1.0);
                 GoSleepDuration = rbReal(0.5);

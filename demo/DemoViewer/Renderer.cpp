@@ -99,11 +99,11 @@ void Renderer::RenderEnvironment( rbEnvironment* env )
         rbVec3 ext = box->HalfExtent();
         rbMtx3 orn = box->Orientation();
 
-        mtxS[0] = 2.0f*ext[0];  mtxS[5] = 2.0f*ext[1];  mtxS[10] = 2.0f*ext[2];
+        mtxS[0] = 2.0f*ext.e[0];  mtxS[5] = 2.0f*ext.e[1];  mtxS[10] = 2.0f*ext.e[2];
 
-        mtxRT[0] = orn.Elem(0,0);  mtxRT[4] = orn.Elem(0,1);  mtxRT[ 8] = orn.Elem(0,2);  mtxRT[12] = pos[0];
-        mtxRT[1] = orn.Elem(1,0);  mtxRT[5] = orn.Elem(1,1);  mtxRT[ 9] = orn.Elem(1,2);  mtxRT[13] = pos[1];
-        mtxRT[2] = orn.Elem(2,0);  mtxRT[6] = orn.Elem(2,1);  mtxRT[10] = orn.Elem(2,2);  mtxRT[14] = pos[2];
+        mtxRT[0] = orn.Elem(0,0);  mtxRT[4] = orn.Elem(0,1);  mtxRT[ 8] = orn.Elem(0,2);  mtxRT[12] = pos.e[0];
+        mtxRT[1] = orn.Elem(1,0);  mtxRT[5] = orn.Elem(1,1);  mtxRT[ 9] = orn.Elem(1,2);  mtxRT[13] = pos.e[1];
+        mtxRT[2] = orn.Elem(2,0);  mtxRT[6] = orn.Elem(2,1);  mtxRT[10] = orn.Elem(2,2);  mtxRT[14] = pos.e[2];
 
         glPushMatrix();
         glMultMatrixf( mtxRT );
