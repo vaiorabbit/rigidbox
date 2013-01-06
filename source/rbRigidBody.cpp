@@ -89,8 +89,8 @@ void rbRigidBody::SetShapeParameter( rbReal mass, rbReal hx, rbReal hy, rbReal h
 
 void rbRigidBody::UpdateInvInertiaWorld()
 {
-    // I^-1 = R * I0^-1 * R^-1
-    state.inv_inertia_world = state.orientation * shape.inv_inertia * state.orientation.GetInverse();
+    // I^-1 = R * I0^-1 * R^T
+    state.inv_inertia_world = state.orientation * shape.inv_inertia * state.orientation.GetTransposed();
 }
 
 void rbRigidBody::UpdateVelocity( rbReal dt )
