@@ -25,7 +25,8 @@ static inline rbReal Sign( rbReal v )
     return v < -RIGIDBOX_TOLERANCE ? rbReal(-1) : rbReal(1);
 }
 
-// Returns so-called 'support point' of a box.
+// [LANG en] [NOTE] In the context of GJK algorithm, this function is 'support map function', that returns 'support point' of a box.
+// [LANG ja] [NOTE] この関数は GJK アルゴリズムでいうところのサポート写像で、出力として立方体の支点 (support point) を返すもの。
 // Ref.: Gino van den Bergen, Collision Detection in Interactive 3D Enviroments, 4.3.4 Support Mappings (pp.130-139)
 static inline rbVec3 FurthestVertexAlongAxis( const rbVec3& axis, const rbVec3& h, const rbMtx3& R, const rbMtx3& RT, const rbVec3& P )
 {
@@ -46,7 +47,7 @@ static inline rbReal Clamp( rbReal val, rbReal min, rbReal max )
     return val;
 }
 
-// Christer Ericson, Real-Time Collision Detection (2005)
+// Ref.: Christer Ericson, Real-Time Collision Detection (2005)
 // 5.1.9 Closest Points of Two Line Segments
 static inline void ClosestPointOfSegments( const rbVec3 colliding_edge[2][2], rbVec3 point_out[2] )
 {
@@ -63,10 +64,10 @@ static inline void ClosestPointOfSegments( const rbVec3 colliding_edge[2][2], rb
     rbReal f = d[1] * r;
     rbReal b = d[0] * d[1];
 
-    // 汎用的な交差判定ルーチンであれば、ここで「辺の両端として渡された
-    // 2点が一致していないかどうか(==点に縮退していないかどうか)」を
-    // チェックする必要がある。しかしここで colliding_edge にその可能性
-    // はないのでチェックは不要。
+    // [LANG en] If you want to make this routine more generic, you must confirm given edges don't degenerate into a point (given edges are not zero-length).
+    // [LANG en] But the argument +colliding_edge+ is always given with valid edge data, we don't have to check the condition.
+    // [LANG ja] より汎用的な交差判定ルーチンにしたいのであれば、ここで「辺の両端として渡された2点が一致していないかどうか
+    // [LANG ja] (==点に縮退していないかどうか)」をチェックする必要がある。しかしここで colliding_edge にその可能性はないのでチェックは不要。
 
     rbReal t[2];
     rbReal denom = a*e - b*b;
@@ -126,7 +127,8 @@ static const rbs32 ColumnIndices[9][2] = {
 };
 
 //
-// Box-Box collision detection algorithm
+// [LANG en] Box-Box collision detection algorithm
+// [LANG ja] 立方体同士の衝突検出
 //
 // Ref.:
 // - Open Dynamics Engine [box.cpp]
@@ -180,7 +182,9 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     rbVec3 best_axis;
     SeparatingAxis best_axis_id;
     rbReal current_penetration;
-    rbReal best_penetration = RIGIDBOX_REAL_MAX; // Current candidate value of penetration depth along +best_axis_id+.
+    // [LANG en] Current candidate value of penetration depth along +best_axis_id+.
+    // [LANG ja] 軸 +best_axis_id+ に沿った貫通深度の候補値
+    rbReal best_penetration = RIGIDBOX_REAL_MAX;
 
     rbVec3 h[2] = { box0->HalfExtent(), box1->HalfExtent() };
     rbMtx3 R[2] = { box0->Orientation(), box1->Orientation() };
@@ -189,20 +193,24 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     rbVec3 distance = P[1] - P[0];
 
     //
-    // Separating-Axis Test
+    // [LANG en] Separating-Axis Test
+    // [LANG ja] 分離軸テスト
     //
 
-    // Box0 のローカル座標系の軸を利用
+    // [LANG en] SAT using local axes of Box0
+    // [LANG ja] Box0 のローカル座標系の軸を利用した分離軸テスト
     SAT0( SeparatingAxis_Box0X );
     SAT0( SeparatingAxis_Box0Y );
     SAT0( SeparatingAxis_Box0Z );
 
-    // Box1 のローカル座標系の軸を利用
+    // [LANG en] SAT using local axes of Box1
+    // [LANG ja] Box1 のローカル座標系の軸を利用した分離軸テスト
     SAT1( SeparatingAxis_Box1X );
     SAT1( SeparatingAxis_Box1Y );
     SAT1( SeparatingAxis_Box1Z );
 
-    // Box0 ・ Box1 それぞれのローカル座標系の軸から作成した分離軸でのテスト
+    // [LANG en] SAT using cross product from the local axes of each boxes
+    // [LANG ja] Box0 ・ Box1 それぞれのローカル座標系の軸から作成した分離軸でのテスト
     SATx( SeparatingAxis_Box0XxBox1X );
     SATx( SeparatingAxis_Box0XxBox1Y );
     SATx( SeparatingAxis_Box0XxBox1Z );
@@ -214,54 +222,68 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     SATx( SeparatingAxis_Box0ZxBox1Z );
 
     //
-    // どの軸上でも隙間が確認できない⇒交差している
+    // [LANG en] No gap is found along any separating axes -> boxes are intersecting
+    // [LANG ja] どの軸上でも隙間が確認できない⇒交差している
     //
 
     switch ( best_axis_id )
     {
 
-    // Box1 の頂点が Box0 の面と交差している場合
+    // [LANG en] a vertex of Box1 is touching the face of Box0
+    // [LANG ja] Box1 の頂点が Box0 の面と交差している場合
     case SeparatingAxis_Box0X:
     case SeparatingAxis_Box0Y:
     case SeparatingAxis_Box0Z:
     {
         contact_out->Normal = best_axis;
-        if ( distance.Normalize() * best_axis >= 0 ) // Box1 -> Box0 と向くように調整
+        // [LANG en] By convention, +Normal+ should point from Box1 to Box0
+        // [LANG ja] Box1 -> Box0 と向くように調整
+        if ( distance.Normalize() * best_axis >= 0 )
             contact_out->Normal *= -1;
 
         contact_out->Position = FurthestVertexAlongAxis( contact_out->Normal, h[1], R[1], RT[1], P[1] );
     }
     break;
 
-    // Box0 の頂点が Box1 の面と交差している場合
+    // [LANG en] a vertex of Box0 is touching the face of Box1
+    // [LANG ja] Box0 の頂点が Box1 の面と交差している場合
     case SeparatingAxis_Box1X:
     case SeparatingAxis_Box1Y:
     case SeparatingAxis_Box1Z:
     {
         contact_out->Normal = best_axis;
-        if ( distance.Normalize() * best_axis >= 0 ) // Box1 -> Box0 と向くように調整
+        // [LANG en] By convention, +Normal+ should point from Box1 to Box0
+        // [LANG ja] Box1 -> Box0 と向くように調整
+        if ( distance.Normalize() * best_axis >= 0 )
             contact_out->Normal *= -1;
 
         contact_out->Position = FurthestVertexAlongAxis( -contact_out->Normal, h[0], R[0], RT[0], P[0] );
     }
     break;
 
-    // Box0 と Box1 の辺同士が交差している場合
+    // [LANG en] Both boxes are touching with each other's edge
+    // [LANG ja] Box0 と Box1 の辺同士が交差している場合
     default:
     {
-        // 法線の決定
+        // [LANG en] Create Normal
+        // [LANG ja] 法線の決定
         contact_out->Normal = best_axis;
-        if ( distance.Normalize() * best_axis >= 0 ) // Box1 -> Box0 と向くように調整
+        // [LANG en] By convention, +Normal+ should point from Box1 to Box0
+        // [LANG ja] Box1 -> Box0 と向くように調整
+        if ( distance.Normalize() * best_axis >= 0 )
         {
             contact_out->Normal *= -1;
             best_axis *= -1;
         }
 
-        // あとはひたすら接触点の位置の推定
-
-        // 1. 接触状態にある辺2本を特定
-        // 2. 辺対辺の最近接点2個を求める
-        // 3. 上記の2個の点の中点を接触点の位置とする
+        // [LANG en] Estimate touching position
+        // [LANG en] 1. identify touching edges
+        // [LANG en] 2. calculate closest points on these edges
+        // [LANG en] 3. take the midpoint of the points as the touching position
+        // [LANG ja] あとはひたすら接触点の位置の推定
+        // [LANG ja] 1. 接触状態にある辺2本を特定
+        // [LANG ja] 2. 辺対辺の最近接点2個を求める
+        // [LANG ja] 3. 上記の2個の点の中点を接触点の位置とする
 
         const rbs32 *ColIdx = ColumnIndices[best_axis_id];
 
@@ -286,11 +308,13 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
                     best_axis_boxlocal[1].e[i] > 0 ? h[1].e[i] : -h[1].e[i];
         }
 
-        // ワールド座標系での位置へ変換
+        // [LANG en] convert to the world coordinate system
+        // [LANG ja] ワールド座標系での位置へ変換
         midpoint_on_colliding_edge[0] = R[0] * midpoint_on_colliding_edge[0] + P[0];
         midpoint_on_colliding_edge[1] = R[1] * midpoint_on_colliding_edge[1] + P[1];
 
-        // 中点がわかればそこから軸方向に幅 h (および -h) だけ伸ばした位置が衝突している辺を表す両端となる
+        // [LANG en] The end points of a colliding edge can be found at positions h (and -h) away from the midpoint.
+        // [LANG ja] 中点がわかればそこから軸方向に幅 h (および -h) だけ伸ばした位置が衝突している辺を表す両端となる
         const rbVec3 colliding_edge[2][2] = {
             {
                 midpoint_on_colliding_edge[0] + h[0].e[ColIdx[0]] * R[0].Column(ColIdx[0]),
@@ -305,16 +329,18 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
         rbVec3 point_out[2];
         ClosestPointOfSegments( colliding_edge, point_out );
 
-        // contact_out->Position の調整
-        // - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする、もしくは
-        // - best_penetration に合わせて point_out[0] または point_out[1] そのものとする
+        // [LANG en] Tweak contact_out->Position
+        // [LANG en] - take the average of point_out[0] and point_out[1], and halve +best_penetration+, or
+        // [LANG ja] contact_out->Position の調整
+        // [LANG ja] - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする
         contact_out->Position = rbReal(0.5) * (point_out[0] + point_out[1]);
         best_penetration *= rbReal(0.5);
     }
     break;
     }
 
-    // 接触のタイプ(頂点対面 or 辺対辺)に依存しない情報はここで整理
+    // [LANG en] Collect type-independent (vertex-face or edge-edge) data
+    // [LANG ja] 接触のタイプ(頂点対面 or 辺対辺)に依存しない情報はここで整理
     contact_out->RelativeBodyPosition[0] = contact_out->Position - P[0];
     contact_out->RelativeBodyPosition[1] = contact_out->Position - P[1];
     contact_out->Body[0] = box0;

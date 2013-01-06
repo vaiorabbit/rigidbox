@@ -93,30 +93,42 @@ void rbEnvironment::Update( rbReal dtime, int div )
 
     BodyPtrContainer::iterator it_body, it_body0, it_body1, it_bodies_end = bodies.end();
 
-    // 前処理
-    contacts.clear(); // 衝突点配列をゼロクリア
+    // [LANG en] Preprocess
+    // [LANG ja] 前処理
+
+    // [LANG en] Cleanup contact point array
+    // [LANG ja] 衝突点配列をゼロクリア
+    contacts.clear();
 
     for ( rbs32 i = 0; i < div; ++i )
     {
         for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
         {
-            (*it_body)->ClearSolverWorkArea();   // 衝突応答で利用する一時領域をゼロクリア
-            (*it_body)->UpdateInvInertiaWorld(); // 位置が更新されているため慣性テンソルも更新
+            // [LANG en] Cleanup temporal space used by collision response routine
+            // [LANG ja] 衝突応答で利用する一時領域をゼロクリア
+            (*it_body)->ClearSolverWorkArea();
+
+            // [LANG en] The orientation of +it_body+ might be modified in the previous loop. So inertia tensor must be updated here.
+            // [LANG ja] 位置が更新されているため慣性テンソルも更新
+            (*it_body)->UpdateInvInertiaWorld();
         }
 
-        // 衝突検出
+        // [LANG en] Collision detection
+        // [LANG ja] 衝突検出
         for ( it_body0 = bodies.begin(); it_body0 != it_bodies_end; ++it_body0 )
         {
             for ( it_body1 = it_body0 + 1; it_body1 != it_bodies_end; ++it_body1 )
             {
-                // 壁/床同士の衝突判定は不要
+                // [LANG en] No need to check between wall/floor intersection
+                // [LANG ja] 壁/床同士の衝突判定は不要
                 if ( (*it_body0)->IsFixed() && (*it_body1)->IsFixed() )
                     continue;
 
                 rbContact c;
                 if ( rbCollision::Detect( *it_body0, *it_body1, &c ) > 0 )
                 {
-                    // すでに似た衝突点が検出済みである場合は登録しない
+                    // [LANG en] No need to register if +contacts+ already have the same (or similar) contact point
+                    // [LANG ja] すでに似た衝突点が検出済みである場合は登録しない
                     ContactContainer::iterator it = std::find_if( contacts.begin(), contacts.end(),
                         std::tr1::bind(SameContacts(), c, std::tr1::placeholders::_1) );
                     if ( it == contacts.end() )
@@ -125,11 +137,13 @@ void rbEnvironment::Update( rbReal dtime, int div )
             }
         }
 
-        // 積分 (力→速度)
+        // [LANG en] Integration (Force -> Velocity)
+        // [LANG ja] 積分 (力→速度)
         for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
             (*it_body)->UpdateVelocity( dt );
 
-        // 衝突応答
+        // [LANG en] Collision response
+        // [LANG ja] 衝突応答
         ContactContainer::iterator it_contacts_end = contacts.end();
         for ( ContactContainer::iterator it_contact = contacts.begin(); it_contact != it_contacts_end; ++it_contact )
             solver.ApplyImpulse( &(*it_contact), dt );
@@ -137,23 +151,29 @@ void rbEnvironment::Update( rbReal dtime, int div )
         for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
             (*it_body)->CorrectVelocity();
 
-        // スリープ状態の更新
+        // [LANG en] Update sleep status
+        // [LANG ja] スリープ状態の更新
         for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
         {
             (*it_body)->UpdateSleepStatus( dt );
             if ( (*it_body)->Sleeping() )
             {
                 (*it_body)->SetLinearVelocity( 0, 0, 0 );
-                (*it_body)->SetAngularVelocity( 0, 0, 0 ); // Angular Momentum も内部でゼロクリアされる
+
+                // [LANG en] Angular momentum is also cleared in this method
+                // [LANG ja] Angular Momentum も内部でゼロクリアされる
+                (*it_body)->SetAngularVelocity( 0, 0, 0 );
             }
         }
 
-        // 積分 (速度→位置)
+        // [LANG en] Integration (Velocity -> Position)
+        // [LANG ja] 積分 (速度→位置)
         for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
             (*it_body)->UpdatePosition( dt );
     }
 
-    // 後処理
+    // [LANG en] Postprocess
+    // [LANG ja] 後処理
     for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
     {
         (*it_body)->SetForce( 0, 0, 0 );

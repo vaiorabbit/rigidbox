@@ -402,17 +402,11 @@ inline void rbMtx3::SetAsCrossProductMatrix( const rbVec3& v )
 }
 
 //
-// 正規直交化(※注意：剛体の姿勢行列のみで利用すること)
-//
-// 角速度の積分を行うと、誤差の蓄積により
-// - 姿勢行列の各列ベクトルは正規化されている
-// - 各列ベクトル同士は直行している
-//
-// という2要件が満たされなくなる。Gram-Schmidt process など汎用的な手法も
-// あるが、ここでは Chris Hecker 氏が Game Developer Magazine の記事向けに
-// 公開したサンプルでの手法を採用している。
+// [LANG en] Orhotnomalization algorithm. Should only be used for the orientation matrix of rigid body (rbRigidBody::State::R).
+// [LANG ja] 正規直交化(※注意：剛体の姿勢行列 rbRigidBody::State::R のみで利用すること)
 //
 // Ref.: Rigid Body Dynamics - Chris Hecker's Website
+//       See the physics article series for Game Developer Magazine.
 //       http://chrishecker.com/Rigid_Body_Dynamics
 //
 inline void rbMtx3::Orthonormalize()

@@ -110,9 +110,10 @@ void rbRigidBody::ApplyImpulse( const rbVec3& impulse, const rbVec3& relative_po
     //
     // Ref.: Physics-Based Animation (2005) p.135, Theorem 6.2 (Applying Impulse to a Rigid Body)
     //
-    // 力積を J とおくと：
-    //   Δv = J / m
-    //   Δω = I^-1 * (r × J)
+    // [LANG en] Take J as an impulse vector :
+    // [LANG ja] 力積を J とおくと：
+    // - Δv = J / m
+    // - Δω = I^-1 * (r × J)
     //
 
     solver_work_area.delta_linear_velocity += shape.inv_mass * impulse;

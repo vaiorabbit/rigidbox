@@ -13,9 +13,8 @@ void rbSolver::ApplyImpulse( rbContact* c, rbReal dt )
     rbReal impulse_magnitude;
     rbVec3 impulse;
 
-    //
-    // 衝突
-    //
+    // [LANG en] Apply impulse generated from collision
+    // [LANG ja] 衝突による速度変化を表すインパルスを剛体に適用
     {
         rbReal K[2] = {
             c->Body[0]->InvMass() + (c->Body[0]->InvInertiaWorld() * ((c->RelativeBodyPosition[0] % c->Normal) % c->RelativeBodyPosition[0])) * c->Normal,
@@ -32,9 +31,8 @@ void rbSolver::ApplyImpulse( rbContact* c, rbReal dt )
     c->Body[0]->ApplyImpulse(  impulse, c->RelativeBodyPosition[0] );
     c->Body[1]->ApplyImpulse( -impulse, c->RelativeBodyPosition[1] );
 
-    //
-    // 摩擦
-    //
+    // [LANG en] Calculate slowdown by friction as impulse
+    // [LANG ja] 摩擦による減速もインパルスとして表現し剛体に適用
     rbVec3 tangent = c->Normal % (c->Normal % relative_velocity);
     {
         rbReal tangent_length = tangent.Length();

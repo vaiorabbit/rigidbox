@@ -11,7 +11,9 @@ struct rbContact
     rbVec3 RelativeBodyPosition[2];
     rbRigidBody* Body[2];
 
-    rbVec3 Normal; // [NOTE] 向きは Body1 -> Body0 となるよう rbCollision::Detect で調整される
+    // [LANG en] We will assume the direction of Normal is always from Body[1] to Body[0]. rbCollision::Detect implements this convention.
+    // [LANG ja] Normal の向きは常に Body[1] -> Body[0] であるものとします。このルールは rbCollision::Detect で実装されています。
+    rbVec3 Normal;
 
     rbReal PenetrationDepth;
 

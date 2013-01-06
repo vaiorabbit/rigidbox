@@ -16,7 +16,8 @@ public:
 
 private:
 
-    // Baumgarte 安定化法のパラメーター β に相当
+    // [LANG en] corresponds to the Baumgarte stabilization parameter β.
+    // [LANG ja] Baumgarte 安定化法のパラメーター β に相当します。
     rbReal bias_factor;
 };
 

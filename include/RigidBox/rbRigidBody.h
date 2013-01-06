@@ -11,7 +11,9 @@ public:
 
     struct State
     {
-        rbVec3 position; // center-of-mass position
+        // [LANG en] +position+ represents 'center-of-mass position'.
+        // [LANG ja] +position_ は重心の位置を示します。
+        rbVec3 position;
         rbMtx3 orientation;
 
         rbVec3 linear_velocity;
@@ -62,7 +64,9 @@ public:
 
     struct Shape
     {
-        rbVec3 half_extent; // box half-extent in x-, y- and z-direction
+        // [LANG en] each elements correspond to the box's half-extent in x-, y- and z-direction.
+        // [LANG ja] それぞれの要素が直方体の x-, y-, z- 軸方向の half-extent に対応します。
+        rbVec3 half_extent;
 
         rbReal inv_mass;
         rbMtx3 inv_inertia;
