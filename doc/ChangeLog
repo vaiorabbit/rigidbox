@@ -1,3 +1,7 @@
+2014-03-30  vaiorabbit  <http://twitter.com/vaiorabbit>
+
+	* Moved to GitHub.
+
 2013-01-06  vaiorabbit  <http://twitter.com/vaiorabbit>
 
 	* rbRigidBody.cpp (UpdateInvInertiaWorld): I^-1 = R * I0^-1 * R^-1 -> I^-1 = R * I0^-1 * R^T
