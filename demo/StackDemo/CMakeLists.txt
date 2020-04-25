@@ -25,11 +25,3 @@ set_target_properties(StackDemo PROPERTIES
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
-
-add_custom_command(
-    TARGET StackDemo
-    POST_BUILD
-    COMMAND copy
-        ${CMAKE_CURRENT_LIST_DIR}/../../lib/Debug/freglut
-        $<TARGET_FILE_DIR:mainProject>/$<TARGET_FILE_NAME:library1>
-)
