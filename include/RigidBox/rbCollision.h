@@ -16,29 +16,31 @@ struct rbContact
 
     rbReal PenetrationDepth;
 
-    rbContact()
-        {}
+    rbContact() = default;
 
-    rbContact( const rbContact& other )
+    rbContact(const rbContact& other)
+        : Position(other.Position)
+        , RelativeBodyPosition{ other.RelativeBodyPosition[0], other.RelativeBodyPosition[1] }
+        , Body{ other.Body[0], other.Body[1] }
+        , Normal(other.Normal)
+        , PenetrationDepth(other.PenetrationDepth)
+    {}
+
+    rbContact& operator =(const rbContact& other)
+    {
+        if (this != &other)
         {
-            *this = other;
+            Position = other.Position;
+            RelativeBodyPosition[0] = other.RelativeBodyPosition[0];
+            RelativeBodyPosition[1] = other.RelativeBodyPosition[1];
+            Body[0] = other.Body[0];
+            Body[1] = other.Body[1];
+            Normal = other.Normal;
+            PenetrationDepth = other.PenetrationDepth;
         }
 
-    rbContact& operator =( const rbContact& other )
-        {
-            if ( this != &other )
-            {
-                Position = other.Position;
-                RelativeBodyPosition[0] = other.RelativeBodyPosition[0];
-                RelativeBodyPosition[1] = other.RelativeBodyPosition[1];
-                Body[0] = other.Body[0];
-                Body[1] = other.Body[1];
-                Normal = other.Normal;
-                PenetrationDepth = other.PenetrationDepth;
-            }
-
-            return *this;
-        }
+        return *this;
+    }
 };
 
 // Collision detection algorithm
