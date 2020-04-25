@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8; -*-
-#ifndef RBSOLVER_H_INCLUDED
-#define RBSOLVER_H_INCLUDED
+#pragma once
 
 #include "rbTypes.h"
 
@@ -42,5 +41,3 @@ private:
 //
 //     3. This notice may not be removed or altered from any source
 //     distribution.
-
-#endif

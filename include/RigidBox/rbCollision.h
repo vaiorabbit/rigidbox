@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8; -*-
-#ifndef RBCOLLISION_H_INCLUDED
-#define RBCOLLISION_H_INCLUDED
+#pragma once
 
 #include "rbTypes.h"
 #include "rbMath.h"
@@ -71,5 +70,3 @@ public:
 //
 //     3. This notice may not be removed or altered from any source
 //     distribution.
-
-#endif

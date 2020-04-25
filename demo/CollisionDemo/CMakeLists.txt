@@ -14,6 +14,8 @@ include_directories( ${OPENGL_INCLUDE_DIR} )
 include_directories( ../../include )
 include_directories( ../DemoViewer )
 
+link_directories( ${CMAKE_CURRENT_LIST_DIR}/../../lib )
+
 add_executable( CollisionDemo ${CollisionDemo_EXE_HDRS} ${CollisionDemo_EXE_SRCS} )
 add_dependencies( CollisionDemo RigidBox DemoViewer )
 target_link_libraries( CollisionDemo DemoViewer_lib RigidBox_lib ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} )

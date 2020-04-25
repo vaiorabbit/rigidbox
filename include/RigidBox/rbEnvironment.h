@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8; -*-
-#ifndef RBENVIRONMENT_H_INCLUDED
-#define RBENVIRONMENT_H_INCLUDED
+#pragma once
 
 #include <vector>
 #include "rbSolver.h"
@@ -10,18 +9,14 @@ class rbEnvironment
 {
 public:
 
-    typedef std::vector<rbRigidBody*> BodyPtrContainer;
-    typedef std::vector<rbContact> ContactContainer;
+    using BodyPtrContainer = std::vector<rbRigidBody*>;
+    using ContactContainer = std::vector<rbContact>;
 
     struct Config
     {
-        rbs32 RigidBodyCapacity;
-        rbs32 ContactCapacty;
-
-        Config()
-            : RigidBodyCapacity(10)
-            , ContactCapacty(20)
-            {}
+        rbs32 RigidBodyCapacity = 10;
+        rbs32 ContactCapacty = 20;
+        rbReal NearThreshold = rbReal(0.02);
     };
 
     rbEnvironment();
@@ -83,5 +78,3 @@ private:
 //
 //     3. This notice may not be removed or altered from any source
 //     distribution.
-
-#endif

@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8; -*-
-#ifndef RBRIGIDBODY_H_INCLUDED
-#define RBRIGIDBODY_H_INCLUDED
+#pragma once
 
 #include "rbTypes.h"
 #include "rbMath.h"
@@ -332,5 +331,3 @@ private:
 //
 //     3. This notice may not be removed or altered from any source
 //     distribution.
-
-#endif

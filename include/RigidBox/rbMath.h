@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8; -*-
-#ifndef RBMATH_H_INCLUDED
-#define RBMATH_H_INCLUDED
+#pragma once
 
 #include "rbTypes.h"
 
@@ -613,5 +612,3 @@ inline rbMtx3 operator *( rbReal f, const rbMtx3& m )
 //
 //     3. This notice may not be removed or altered from any source
 //     distribution.
-
-#endif

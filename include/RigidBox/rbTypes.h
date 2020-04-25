@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8; -*-
-#ifndef RBTYPES_H_INCLUDED
-#define RBTYPES_H_INCLUDED
+#pragma once
 
 #include <cfloat>
 #include <cmath>
@@ -98,5 +97,3 @@ class rbSolver;
 //
 //     3. This notice may not be removed or altered from any source
 //     distribution.
-
-#endif

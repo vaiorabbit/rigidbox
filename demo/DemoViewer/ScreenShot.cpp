@@ -3,7 +3,9 @@
 # include <GLUT/glut.h>
 #else
 # include <GL/glut.h>
-# include <GL/glext.h>
+// https://github.com/KhronosGroup/OpenGL-Registry/blob/master/api/GL/glext.h
+#define GL_BGRA                           0x80E1
+#define GL_UNSIGNED_INT_8_8_8_8_REV       0x8367
 #endif
 #include <cstdio>
 #include <ctime>

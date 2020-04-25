@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8; -*-
-#ifndef RIGIDBOX_H_INCLUDED
-#define RIGIDBOX_H_INCLUDED
+#pragma once
 
 #include "rbCollision.h"
 #include "rbEnvironment.h"
@@ -30,5 +29,3 @@
 //
 //     3. This notice may not be removed or altered from any source
 //     distribution.
-
-#endif

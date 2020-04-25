@@ -71,18 +71,6 @@ bool rbEnvironment::Unregister( rbRigidBody* box )
     return false;
 }
 
-
-struct SameContacts : public std::binary_function<const rbContact&, const rbContact&, bool>
-{
-    static constexpr rbReal NearThreshold = rbReal(0.02);
-
-    bool operator()( const rbContact& c0, const rbContact& c1 ) const
-    {
-        return (c0.Position - c1.Position).LengthSq() <= NearThreshold ? true : false;
-    }
-};
-
-
 void rbEnvironment::Update( rbReal dtime, int div )
 {
     rbReal dt = dtime / div;
@@ -125,8 +113,10 @@ void rbEnvironment::Update( rbReal dtime, int div )
                 {
                     // [LANG en] No need to register if +contacts+ already have the same (or similar) contact point
                     // [LANG ja] すでに似た衝突点が検出済みである場合は登録しない
-                    ContactContainer::iterator it = std::find_if( contacts.begin(), contacts.end(),
-                        std::bind(SameContacts(), c, std::placeholders::_1) );
+                    ContactContainer::iterator it = std::find_if(contacts.begin(), contacts.end(),
+                        [this, &c](const rbContact& ci) {
+                            return (c.Position - ci.Position).LengthSq() <= this->config.NearThreshold ? true : false;
+                        });
                     if ( it == contacts.end() )
                         contacts.push_back( c );
                 }

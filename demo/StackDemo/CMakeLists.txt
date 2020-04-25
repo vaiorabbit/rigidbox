@@ -14,6 +14,8 @@ include_directories( ${OPENGL_INCLUDE_DIR} )
 include_directories( ../../include )
 include_directories( ../DemoViewer )
 
+link_directories( ${CMAKE_CURRENT_LIST_DIR}/../../lib )
+
 add_executable( StackDemo ${StackDemo_EXE_HDRS} ${StackDemo_EXE_SRCS} )
 add_dependencies( StackDemo RigidBox DemoViewer )
 target_link_libraries( StackDemo DemoViewer_lib RigidBox_lib ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} )
@@ -24,3 +26,10 @@ set_target_properties(StackDemo PROPERTIES
     CXX_EXTENSIONS NO
 )
 
+add_custom_command(
+    TARGET StackDemo
+    POST_BUILD
+    COMMAND copy
+        ${CMAKE_CURRENT_LIST_DIR}/../../lib/Debug/freglut
+        $<TARGET_FILE_DIR:mainProject>/$<TARGET_FILE_NAME:library1>
+)
