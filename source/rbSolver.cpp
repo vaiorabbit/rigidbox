@@ -49,7 +49,7 @@ void rbSolver::ApplyImpulse( rbContact* c, rbReal dt )
         };
 
         if ( K[0] + K[1] > RIGIDBOX_TOLERANCE )
-            impulse_magnitude = rbReal(1) / K[0] + K[1];
+            impulse_magnitude = rbReal(1) / (K[0] + K[1]);
         else
             impulse_magnitude = rbReal(0);
     }
