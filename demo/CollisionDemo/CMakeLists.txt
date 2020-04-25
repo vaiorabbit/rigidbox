@@ -17,3 +17,9 @@ include_directories( ../DemoViewer )
 add_executable( CollisionDemo ${CollisionDemo_EXE_HDRS} ${CollisionDemo_EXE_SRCS} )
 add_dependencies( CollisionDemo RigidBox DemoViewer )
 target_link_libraries( CollisionDemo DemoViewer_lib RigidBox_lib ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} )
+
+set_target_properties(CollisionDemo PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS NO
+)

@@ -17,3 +17,10 @@ include_directories( ../DemoViewer )
 add_executable( StackDemo ${StackDemo_EXE_HDRS} ${StackDemo_EXE_SRCS} )
 add_dependencies( StackDemo RigidBox DemoViewer )
 target_link_libraries( StackDemo DemoViewer_lib RigidBox_lib ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} )
+
+set_target_properties(StackDemo PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS NO
+)
+

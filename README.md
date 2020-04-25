@@ -3,7 +3,7 @@
 # RigidBox : A Small Library for 3D Rigid Body Physics Tutorial #
 
 *   Created : 2011-02-23
-*   Last modified : 2014-03-30
+*   Last modified : 2020-04-25
 
 
 RigidBox is a small library for demonstrating how to implement 3D rigid body physics engine.

@@ -1,10 +1,6 @@
 // -*- mode: C++; coding: utf-8; -*-
 #include <algorithm>
-#if defined(__APPLE__) || defined(__linux__) || defined(__CYGWIN__)
-# include <tr1/functional>
-#else
-# include <functional>
-#endif
+#include <functional>
 
 #include <RigidBox/rbCollision.h>
 #include <RigidBox/rbEnvironment.h>
@@ -78,7 +74,7 @@ bool rbEnvironment::Unregister( rbRigidBody* box )
 
 struct SameContacts : public std::binary_function<const rbContact&, const rbContact&, bool>
 {
-    static const rbReal NearThreshold = rbReal(0.02);
+    static constexpr rbReal NearThreshold = rbReal(0.02);
 
     bool operator()( const rbContact& c0, const rbContact& c1 ) const
     {
@@ -130,7 +126,7 @@ void rbEnvironment::Update( rbReal dtime, int div )
                     // [LANG en] No need to register if +contacts+ already have the same (or similar) contact point
                     // [LANG ja] すでに似た衝突点が検出済みである場合は登録しない
                     ContactContainer::iterator it = std::find_if( contacts.begin(), contacts.end(),
-                        std::tr1::bind(SameContacts(), c, std::tr1::placeholders::_1) );
+                        std::bind(SameContacts(), c, std::placeholders::_1) );
                     if ( it == contacts.end() )
                         contacts.push_back( c );
                 }
@@ -182,7 +178,7 @@ void rbEnvironment::Update( rbReal dtime, int div )
 }
 
 // RigidBox : A Small Library for 3D Rigid Body Physics Tutorial
-// Copyright (c) 2011- vaiorabbit <http://twitter.com/vaiorabbit>
+// Copyright (c) 2011-2020 vaiorabbit <http://twitter.com/vaiorabbit>
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages

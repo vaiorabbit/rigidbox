@@ -78,7 +78,7 @@ class rbRigidBody;
 class rbSolver;
 
 // RigidBox : A Small Library for 3D Rigid Body Physics Tutorial
-// Copyright (c) 2011- vaiorabbit <http://twitter.com/vaiorabbit>
+// Copyright (c) 2011-2020 vaiorabbit <http://twitter.com/vaiorabbit>
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages

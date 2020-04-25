@@ -6,3 +6,9 @@ include_directories( ${CMAKE_CURRENT_LIST_DIR}/../../include )
 add_dependencies( DemoViewer RigidBox )
 
 set( LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_LIST_DIR}/../lib )
+
+set_target_properties(DemoViewer PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS NO
+)
