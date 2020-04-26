@@ -53,7 +53,9 @@ public:
 
     virtual void Update( float dt )
         {
-            const rbs32 div = 4; // 増やし過ぎると衝突点が多発し弾ける
+            // [LANG en] Increasing 'div' generates too much contact points for one Update() in the 'env', and causes explosion. 3 or 4 is a reasonable choise for this scene.
+            // [LANG ja] 'dev' を増やすと、1回のUpdate()で扱うには多すぎる衝突点が 'env' 内部に生成され、結果として爆発するかのような見た目が効果を生んでしまいます。3または4がこのシーンには適切です。
+            const rbs32 div = 4;
             const rbVec3 G( 0, rbReal(-9.8), 0 );
 
             for ( rbs32 i = 0; i < BoxCount; ++i )
@@ -89,15 +91,9 @@ public:
 
 int main( int argc, char* argv[] )
 {
-    // Application app;
+    Application app;
     StackDemo demo;
 
-    // app.Initialize( argc, argv );
-    // app.RegisterScene( &demo );
-    // app.Run();
-    // app.Finalize();
-
-    Application app;
     app.Initialize( argc, argv );
     app.RegisterScene( &demo );
     bool running = true;
