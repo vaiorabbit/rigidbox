@@ -1,9 +1,22 @@
+# Core sources
 file( GLOB DEMOVIEWER_LIB_HDRS "${CMAKE_CURRENT_LIST_DIR}/*.h" )
 file( GLOB DEMOVIEWER_LIB_SRCS "${CMAKE_CURRENT_LIST_DIR}/*.cpp" )
-add_library( DemoViewer ${DEMOVIEWER_LIB_HDRS} ${DEMOVIEWER_LIB_SRCS} )
+
+# ImGui
+set(IMGUI_PATH "${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/imgui/imgui")
+file( GLOB IMGUI_SRCS
+    "${IMGUI_PATH}/*.cpp"
+    "${IMGUI_PATH}/*.h"
+)
+source_group("imgui" FILES ${IMGUI_SRCS})
+
+add_library( DemoViewer ${DEMOVIEWER_LIB_HDRS} ${DEMOVIEWER_LIB_SRCS} ${IMGUI_SRCS} )
+
+# include/link path
 include_directories(
     ${CMAKE_CURRENT_LIST_DIR}/../../include
     ${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/SDL2/include
+    ${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/imgui/imgui
 )
 link_directories(
     ${CMAKE_CURRENT_LIST_DIR}/../../lib
