@@ -27,22 +27,24 @@ public:
     rbRigidBody* RigidBody( rbu32 index )
         { return bodies.at( index ); }
 
-    rbu32 RigidBodyCount()
+    size_t RigidBodyCount()
         { return bodies.size(); }
 
-    rbu32 RigidBodyCapacity()
+    size_t RigidBodyCapacity()
         { return bodies.capacity(); }
 
 
     rbContact* Contact( rbu32 index )
         { return &contacts.at( index ); }
 
-    rbu32 ContactCount()
+    size_t ContactCount()
         { return contacts.size(); }
 
-    rbu32 ContactCapacity()
+    size_t ContactCapacity()
         { return contacts.capacity(); }
 
+    void ClearContacts()
+        { contacts.clear(); }
 
     bool Register( rbRigidBody* box );
     bool Unregister( rbRigidBody* box );

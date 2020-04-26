@@ -13,3 +13,8 @@ set_target_properties(RigidBox PROPERTIES
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
+
+if ( MSVC )
+    # "The file contains a character that cannot be represented in the current code page (...)"
+    target_compile_options(RigidBox PRIVATE "/wd4819")
+endif()

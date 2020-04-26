@@ -1,6 +1,6 @@
 // -*- mode: C++; coding: utf-8 -*-
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <cstring>
 #include "Camera.h"
 
 static const float Cam_Pi = float(3.141592653589793);
@@ -59,9 +59,9 @@ Camera::Camera()
 {
     ClampParameters();
 
-    position[0] = radius * sinf(theta) * cos(phi);
-    position[1] = radius * cos(theta);
-    position[2] = radius * sin(theta) * sin(phi);
+    position[0] = radius * std::sin(theta) * std::cos(phi);
+    position[1] = radius * std::cos(theta);
+    position[2] = radius * std::sin(theta) * std::sin(phi);
 
     at[0] = 0;  at[1] = 2;  at[2] = 0;
     up[0] = 0;  up[1] = 1;  up[2] = 0;
@@ -146,9 +146,9 @@ void Camera::UpdateFromMouseMotion( int x, int y )
         }
 
         ClampParameters();
-        position[0] = radius * sinf(theta) * cos(phi);
-        position[1] = radius * cos(theta);
-        position[2] = radius * sin(theta) * sin(phi);
+        position[0] = radius * std::sin(theta) * std::cos(phi);
+        position[1] = radius * std::cos(theta);
+        position[2] = radius * std::sin(theta) * std::sin(phi);
 
         Vec3Add( position, position, at );
 
@@ -167,7 +167,7 @@ void Camera::ViewMatrix( float mtxView[16] )
         UpdateViewMatrix();
         renew_view = false;
     }
-    memcpy( mtxView, this->mtxView, 16*sizeof(float) );
+    std::memcpy( mtxView, this->mtxView, 16*sizeof(float) );
 }
 
 void Camera::ProjectionMatrix( float mtxProj[16] )
@@ -177,7 +177,7 @@ void Camera::ProjectionMatrix( float mtxProj[16] )
         UpdateProjectionMatrix();
         renew_proj = false;
     }
-    memcpy( mtxProj, this->mtxProj, 16*sizeof(float) );
+    std::memcpy( mtxProj, this->mtxProj, 16*sizeof(float) );
 }
 
 void Camera::ClampParameters()
@@ -223,7 +223,7 @@ void Camera::UpdateViewMatrix()
 
 void Camera::UpdateProjectionMatrix()
 {
-    float f = tanf( 0.5f * (Cam_Pi * fovy_deg) / 180.0f );
+    float f = std::tan( 0.5f * (Cam_Pi * fovy_deg) / 180.0f );
     f = 1.0f / f;
     float aspect = float(width) / float(height);
 

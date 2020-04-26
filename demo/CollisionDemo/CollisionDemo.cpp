@@ -49,6 +49,7 @@ public:
 
     virtual void Reset()
         {
+            env.ClearContacts();
             box[0].ResetStatuses();
             box[1].ResetStatuses();
             box[0].SetAngularMomentum(0,0,0);
@@ -81,7 +82,10 @@ int main( int argc, char* argv[] )
 
     app.Initialize( argc, argv );
     app.RegisterScene( &demo );
-    app.Run();
+    bool running = true;
+    while(running) {
+        running = app.MainLoop();
+    }
     app.Finalize();
 
     return 0;

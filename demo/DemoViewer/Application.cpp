@@ -1,9 +1,12 @@
 // -*- mode: C++; coding: utf-8 -*-
-#if defined(__APPLE__)
-# include <GLUT/glut.h>
-#else
-# include <GL/glut.h>
+#if defined(_MSC_VER)
+# define WIN32_LEAN_AND_MEAN 
+# include <Windows.h>
+# include <GL/GL.h>
+#elif defined(__APPLE__)
+# include <OpenGL/gl.h>
 #endif
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "Application.h"
@@ -14,21 +17,37 @@
 
 // #define ENABLE_CAPTURE_MOVIE
 
-// static
-Application* Application::self = NULL;
+struct Application::WindowImpl
+{
+    SDL_Window* window = nullptr;
+    SDL_GLContext context = nullptr;
+};
+
+struct Application::EventImpl
+{
+    SDL_Event event;
+    bool running;
+
+    EventImpl()
+        : event()
+        , running(true)
+    {}
+};
 
 Application::Application()
-    : camera( NULL )
-    , renderer( NULL )
-    , scene( NULL )
-    , screenshot_session( NULL )
+    : window_impl(nullptr)
+    , event_impl(nullptr)
+    , camera(nullptr)
+    , renderer(nullptr)
+    , scene(nullptr)
+    , screenshot_session(nullptr)
     , cleanup_scene_on_exit( false )
     , pause( true )
     , one_step( false )
     , capture_screen( false )
     , capture_movie( false )
-    , window_width( 640 )
-    , window_height( 340 )
+    , window_width( 1280 )
+    , window_height( 720 )
     , window_title( "RigidBox Demo" )
 {}
 
@@ -46,37 +65,52 @@ Application::~Application()
     delete renderer;
 
     delete camera;
+
+    delete event_impl;
+    delete window_impl;
 }
 
 void Application::Initialize( int argc, char* argv[] )
 {
-    self = this;
+    window_impl = new WindowImpl;
+    event_impl = new EventImpl;
+    std::memset(&event_impl->event, 0, sizeof(SDL_Event));
 
-    glutInit( &argc, argv );
-    glutInitDisplayMode( GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE );
-    glutInitWindowPosition( 0, 0 );
-    glutInitWindowSize( window_width, window_height );
-    glutCreateWindow( window_title );
+    SDL_Init( SDL_INIT_EVERYTHING );
+    SDL_Quit();
 
-    glutKeyboardFunc( Application::OnKeyboard );
-    glutMouseFunc( Application::OnMouse );
-    glutMotionFunc( Application::OnMotion );
-    glutReshapeFunc( Application::OnReshape );
-    glutDisplayFunc( Application::OnDisplay );
-    glutIdleFunc( Application::OnIdle );
+    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+    SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
+    SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
+    SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 );
+    SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 );
+    SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
+    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
 
-    glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
+    SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY );
 
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_LIGHTING );
-    glEnable( GL_LIGHT0 );
+    SDL_Window* window = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+    SDL_GLContext context = SDL_GL_CreateContext( window );
+
+    window_impl->window = window;
+    window_impl->context = context;
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 
     renderer = new Renderer();
     renderer->Initialize();
 
     camera = new Camera();
 
-    screenshot_session = new ScreenShotSession( window_width, window_height, 4 );
+    screenshot_session = new ScreenShotSession(window_width, window_height, 4);
+
+    Resize(window_width, window_height);
 }
 
 void Application::RegisterScene( Scene* scene, bool cleanup_on_exit )
@@ -89,99 +123,124 @@ void Application::RegisterScene( Scene* scene, bool cleanup_on_exit )
 
 void Application::UnregisterScene()
 {
-    scene = NULL;
-}
-
-void Application::Run()
-{
-    glutMainLoop();
+    scene = nullptr;
 }
 
 void Application::Finalize()
-{}
-
-// static
-void Application::OnKeyboard( unsigned char key, int x, int y )
 {
-    switch( key )
+    SDL_GL_DeleteContext( window_impl->context );
+    SDL_DestroyWindow( window_impl->window );
+    SDL_Quit();
+}
+
+
+void Application::OnKeyboard()
+{
+    switch (event_impl->event.type)
     {
-    case 'r': // Reset
-        self->scene->Reset();
-        self->pause = true;
-        self->one_step = false;
-        break;
-
-    case ' ':
-        self->pause = !self->pause;
-        break;
-
-    case 's':
-        self->one_step = true;
-        self->pause = true;
-        break;
-
-    case 'c':
-        self->capture_screen = true;
-        break;
-
-    case 'm':
-        self->capture_movie = !self->capture_movie;
-        break;
-
-    case 'q': // Quit
-    case 27:  // Esc
-        exit( EXIT_SUCCESS );
+    case SDL_KEYDOWN:
+        switch (event_impl->event.key.keysym.sym) {
+        case SDLK_ESCAPE:
+        case SDLK_q: /* fallthrough */
+            event_impl->running = false;
+            break;
+        case SDLK_SPACE:
+            this->pause = !this->pause;
+            break;
+        case SDLK_r: // Reset
+            this->scene->Reset();
+            this->pause = true;
+            this->one_step = false;
+            break;
+        case SDLK_s:
+            this->one_step = true;
+            this->pause = true;
+            break;
+        case SDLK_c:
+            this->capture_screen = true;
+            break;
+        case SDLK_m:
+            this->capture_movie = !this->capture_movie;
+            break;
+        }
         break;
     }
 }
 
-// static
-void Application::OnMouse( int button, int state, int x, int y )
+void Application::OnMouse()
 {
-    static const unsigned int button_map[] = {
-        Camera::MouseButton_Left,   // GLUT_LEFT_BUTTON
-        Camera::MouseButton_Middle, // GLUT_MIDDLE_BUTTON
-        Camera::MouseButton_Right   // GLUT_RIGHT_BUTTON
+    auto& button_map = [&](int32_t sdl_mouse_button) -> uint32_t {
+        switch (sdl_mouse_button) {
+        case SDL_BUTTON_LEFT:   return Camera::MouseButton_Left;   break;
+        case SDL_BUTTON_MIDDLE: return Camera::MouseButton_Middle; break;
+        case SDL_BUTTON_RIGHT:  return Camera::MouseButton_Right;  break;
+        default: return 0; break;
+        }
     };
 
-    static const unsigned int state_map[] = {
-        Camera::MouseState_Down, // GLUT_DOWN
-        Camera::MouseState_Up    // GLUT_UP
+    auto& state_map = [&](int32_t sdl_mouse_event) -> uint32_t {
+        switch (sdl_mouse_event) {
+        case SDL_MOUSEBUTTONDOWN: return Camera::MouseState_Down; break;
+        case SDL_MOUSEBUTTONUP:   return Camera::MouseState_Up;   break;
+        default: return 0; break;
+        }
     };
 
-    self->camera->SetMouseState( button_map[button], state_map[state], x, y );
+    switch (event_impl->event.type)
+    {
+    case SDL_MOUSEBUTTONDOWN: /* fallthrouth */
+    case SDL_MOUSEBUTTONUP:
+        // TODO handle event.state (SDL_PRESSED or SDL_RELEASED) and SDL_MouseWheelEvent
+        this->camera->SetMouseState( button_map(event_impl->event.button.button), state_map(event_impl->event.type), event_impl->event.button.x, event_impl->event.button.y );
+        break;
+    default:
+        break;
+    }
 }
 
-// static
-void Application::OnMotion( int x, int y )
+void Application::OnMotion()
 {
-    self->camera->UpdateFromMouseMotion( x, y );
+    switch (event_impl->event.type)
+    {
+    case SDL_MOUSEMOTION:
+        this->camera->UpdateFromMouseMotion( event_impl->event.motion.x, event_impl->event.motion.y );
+        break;
+    default:
+        break;
+    }
 }
 
-// static
-void Application::OnReshape( int width, int height )
+void Application::Resize(int32_t width, int32_t height)
 {
-    self->window_width = width;
-    self->window_height = height;
+    this->window_width = width;
+    this->window_height = height;
 
-    self->camera->SetWidth( width );
-    self->camera->SetHeight( height );
+    this->camera->SetWidth( width );
+    this->camera->SetHeight( height );
     glViewport( 0, 0, width, height );
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
     float mtxProj[16];
-    self->camera->ProjectionMatrix( mtxProj );
+    this->camera->ProjectionMatrix( mtxProj );
     glMultMatrixf( mtxProj );
     glMatrixMode( GL_MODELVIEW );
 
-    glutPostRedisplay();
-
-    self->screenshot_session->Reset( width, height, 4 );
+    this->screenshot_session->Reset( width, height, 4 );
 }
 
-// static
-void Application::OnDisplay( void )
+
+void Application::OnReshape()
+{
+    if (event_impl->event.type == SDL_WINDOWEVENT &&
+        event_impl->event.window.event == SDL_WINDOWEVENT_RESIZED) {
+        if (window_impl->window == SDL_GetWindowFromID(event_impl->event.window.windowID)) {
+            Resize(event_impl->event.window.data1, event_impl->event.window.data2);
+        }
+    }
+}
+
+void Application::OnDisplay()
 {
     glPushAttrib( GL_ALL_ATTRIB_BITS );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -201,39 +260,56 @@ void Application::OnDisplay( void )
     }
 
     float mtxView[16];
-    self->camera->ViewMatrix( mtxView );
+    this->camera->ViewMatrix( mtxView );
     glMultMatrixf( mtxView );
 
-    self->renderer->RenderFloor();
+    this->renderer->RenderFloor();
 
-    self->scene->Render( self->renderer );
+    this->scene->Render( this->renderer );
 
     glPopMatrix();
     glPopAttrib();
 
 #ifdef ENABLE_CAPTURE_MOVIE
-    if ( self->capture_movie && !self->capture_screen )
-        self->capture_screen = true;
+    if ( this->capture_movie && !this->capture_screen )
+        this->capture_screen = true;
 #endif // ENABLE_CAPTURE_MOVIE
 
-    if ( self->capture_screen )
+    if ( this->capture_screen )
     {
-        self->screenshot_session->Save();
-        self->capture_screen = false;
+        this->screenshot_session->Save();
+        this->capture_screen = false;
     }
-
-    glutSwapBuffers();
 }
 
-// static
-void Application::OnIdle( void )
+void Application::OnIdle()
 {
     static const float dt = 1.0f / 60.0f;
 
-    if ( self->one_step || !self->pause )
-        self->scene->Update( dt );
+    if ( this->one_step || !this->pause )
+        this->scene->Update( dt );
 
-    self->one_step = false;
+    this->one_step = false;
+}
 
-    glutPostRedisplay();
+bool Application::MainLoop()
+{
+    while( SDL_PollEvent( &event_impl->event ) )
+    {
+        OnKeyboard();
+        OnMouse();
+        OnMotion();
+        OnReshape();
+        if (!event_impl->running) {
+            return false;
+        }
+    }
+
+    OnIdle();
+    OnDisplay();
+
+    SDL_GL_SwapWindow( window_impl->window );
+    SDL_Delay( 1 );
+
+    return true;
 }

@@ -64,13 +64,14 @@ public:
 
     virtual void Reset()
         {
+            env->ClearContacts();
             for ( rbs32 i = 0; i < BoxCount; ++i )
             {
                 box[i].ResetStatuses();
                 box[i].SetAngularMomentum(0,0,0);
 
                 box[i].SetPosition( frand()-rbReal(0.5), rbReal(2.5) + i * rbReal(4), frand()-rbReal(0.5) );
-                box[i].SetOrientation( 0, rbToRad(10*i), 0 );
+                box[i].SetOrientation( 0, rbToRad(rbReal(10*i)), 0 );
                 box[i].SetLinearVelocity( 0, 0, 0 );
             }
 
@@ -88,12 +89,21 @@ public:
 
 int main( int argc, char* argv[] )
 {
-    Application app;
+    // Application app;
     StackDemo demo;
 
+    // app.Initialize( argc, argv );
+    // app.RegisterScene( &demo );
+    // app.Run();
+    // app.Finalize();
+
+    Application app;
     app.Initialize( argc, argv );
     app.RegisterScene( &demo );
-    app.Run();
+    bool running = true;
+    while(running) {
+        running = app.MainLoop();
+    }
     app.Finalize();
 
     return 0;

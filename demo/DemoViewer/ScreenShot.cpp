@@ -1,12 +1,22 @@
 // -*- mode: C++; coding: utf-8 -*-
-#if defined(__APPLE__)
-# include <GLUT/glut.h>
-#else
-# include <GL/glut.h>
-// https://github.com/KhronosGroup/OpenGL-Registry/blob/master/api/GL/glext.h
-#define GL_BGRA                           0x80E1
-#define GL_UNSIGNED_INT_8_8_8_8_REV       0x8367
+#if defined(_MSC_VER)
+# define WIN32_LEAN_AND_MEAN 
+# include <Windows.h>
+# include <GL/GL.h>
+# pragma warning( push )
+# pragma warning( disable : 4996 )
+#elif defined(__APPLE__)
+# include <OpenGL/gl.h>
 #endif
+
+// https://github.com/KhronosGroup/OpenGL-Registry/blob/master/api/GL/glext.h
+#ifndef GL_BGRA
+# define GL_BGRA                           0x80E1
+#endif
+#ifndef GL_UNSIGNED_INT_8_8_8_8_REV
+# define GL_UNSIGNED_INT_8_8_8_8_REV       0x8367
+#endif
+
 #include <cstdio>
 #include <ctime>
 #include <RigidBox/RigidBox.h>
@@ -121,3 +131,7 @@ void ScreenShotSession::Reset( int width_, int height_, int depth_ )
 
     UpdateSessionName();
 }
+
+#if defined(_MSC_VER)
+# pragma warning(pop)
+#endif

@@ -82,7 +82,7 @@ void rbEnvironment::Update( rbReal dtime, int div )
 
     // [LANG en] Cleanup contact point array
     // [LANG ja] 衝突点配列をゼロクリア
-    contacts.clear();
+    ClearContacts();
 
     for ( rbs32 i = 0; i < div; ++i )
     {

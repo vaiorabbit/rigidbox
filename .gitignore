@@ -1,1 +1,6 @@
 build
+thirdparty/SDL2/include/SDL*
+thirdparty/SDL2/include/*.h
+thirdparty/SDL2/lib/*dll
+thirdparty/SDL2/lib/*lib
+

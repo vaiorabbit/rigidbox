@@ -1,6 +1,5 @@
 // -*- mode: C++; coding: utf-8 -*-
-#ifndef DEMOVIEWER_APPLICATION_H_INCLUDED
-#define DEMOVIEWER_APPLICATION_H_INCLUDED
+#pragma once
 
 class Camera;
 class Renderer;
@@ -17,10 +16,16 @@ public:
     void Initialize( int argc, char* argv[] );
     void RegisterScene( Scene* scene, bool cleanup_on_exit = false );
     void UnregisterScene();
-    void Run();
+    bool MainLoop();
     void Finalize();
 
 private:
+
+    struct WindowImpl;
+    WindowImpl* window_impl;
+
+    struct EventImpl;
+    EventImpl* event_impl;
 
     Camera* camera;
     Renderer* renderer;
@@ -36,13 +41,13 @@ private:
 
     int window_width, window_height;
     char* window_title;
-    static Application* self;
-    static void OnKeyboard( unsigned char key, int x, int y );
-    static void OnMouse( int button, int state, int x, int y );
-    static void OnMotion( int x, int y );
-    static void OnReshape( int width, int height );
-    static void OnDisplay( void );
-    static void OnIdle( void );
-};
 
-#endif
+    void OnKeyboard();
+    void OnMouse();
+    void OnMotion();
+    void OnReshape();
+    void OnDisplay();
+    void OnIdle();
+
+    void Resize(int32_t width, int32_t height);
+};
