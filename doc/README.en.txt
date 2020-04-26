@@ -1,6 +1,6 @@
 = RigidBox : A Small Library for 3D Rigid Body Physics Tutorial
 
-                                             Last Update: Mar 24, 2012
+                                             Last Update: Apr 26, 2020
                                                    Since: Feb 23, 2011
                                                    by vaiorabbit
 
@@ -83,16 +83,10 @@ So RigidBox is suitable for programmers who wants to grasp the essencial parts o
 == Confirmed environment
 
 * Mac OS X
-  * Version  : Snow Leopard (10.6)
-  * Compiler : Xcode 4
+  * 10.15, Xcode
 
 * Windows
-  * Version  : Windows Vista
-  * Compiler : Visual C++ 2010 + Windows SDK v7.0A
-
-* Linux
-  * Version  : Ubuntu 11.04
-  * Compiler : GCC 4.5
+  * Windows 10 18363.778 Visual Studio 2019
 
 
 
@@ -102,16 +96,13 @@ So RigidBox is suitable for programmers who wants to grasp the essencial parts o
 
 ==== CMake
 
-[Notice] If you use Visual Studio 2010 or Xcode 4, you can skip this step.
-         Just use the project files in the 'build' directory.
-
 * CMake can generate new project files / build scripts for your environment.
 * http://www.cmake.org/
 
 Move to the 'build' directory. Then type:
 
 * Windows
-  * > cmake -G "Visual Sutdio 2010" ..
+  * > cmake -G "Visual Sutdio 2019" ..
 
 * Mac OS X
   * $ cmake -G "Xcode" ..
@@ -124,8 +115,6 @@ Move to the 'build' directory. Then type:
 * Windows
   * gl.h : Install Windows SDK.
     http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=8279
-  * glext.h : Get the newest version from OpenGL.org.
-    http://www.opengl.org/registry/api/glext.h
       
 * Mac OS X
   * No setup required. The OS provides OpenGL-related headers/libraries
@@ -135,19 +124,13 @@ Move to the 'build' directory. Then type:
   * You can install OpenGL-related dev packages via package managers like
     Synaptic, etc.
 
-==== GLUT
+==== SDL2
 
 * Windows
-  * I used FreeGLUT.
-    http://freeglut.sourceforge.net/
+  * Use thirdparty/SDL2/GetDevPackage.cmd
     
 * Mac OS X
-  * No setup required. The OS provides OpenGL-related headers/libraries
-    as its standard feature.
-
-* Linux (Ubuntu)
-  * You can install OpenGL-related dev packages via package managers like
-    Synaptic, etc.
+  * '$ brew install SDL2' may help
 
 
 === Building the library

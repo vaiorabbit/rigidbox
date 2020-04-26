@@ -2,7 +2,7 @@
 
 3D剛体物理の実装方法を紹介する小さなライブラリです。
 
-                                             Last Update: Mar 24, 2012
+                                             Last Update: Apr 26, 2020
                                                    Since: Feb 23, 2011
                                                    by vaiorabbit
 
@@ -102,17 +102,10 @@ RigidBoxライブラリは以上をできる限り手短に実演することで
 == 確認済みの動作環境
 
 * Mac OS X
-  * Version  : Snow Leopard (10.6)
-  * Compiler : Xcode 4
+  * 10.15, Xcode
 
 * Windows
-  * Version  : Windows Vista
-  * Compiler : Visual C++ 2010 + Windows SDK v7.0A
-
-* Linux
-  * Version  : Ubuntu 11.04
-  * Compiler : GCC 4.5
-
+  * Windows 10 18363.778 Visual Studio 2019
 
 
 == ビルド方法
@@ -121,16 +114,13 @@ RigidBoxライブラリは以上をできる限り手短に実演することで
 
 ==== CMake
 
-※Visual Studio 2010 および Xcode 4 を利用する場合は不要です。
-  build ディレクトリにプロジェクトファイルを同梱しています。
-
 * http://www.cmake.org/
 * 各自の環境に合わせたビルドスクリプトの生成に利用します。
 
 コマンドライン上で build ディレクトリへ移動し、以下のコマンドを実行してください。
 
 * Windows
-  * > cmake -G "Visual Sutdio 2010" ..
+  * > cmake -G "Visual Sutdio 2019" ..
     Visual Studio ソリューションファイル (RigidBox.sln) が生成されます。
 
 * Mac OS X
@@ -146,8 +136,6 @@ RigidBoxライブラリは以上をできる限り手短に実演することで
 * Windows
   * gl.h : Windows SDK をインストールしてください。
     http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=8279
-  * glext.h : OpenGL.org より入手してください。
-    http://www.opengl.org/registry/api/glext.h
       
 * Mac OS X
   * OS に標準で同梱されています。
@@ -155,17 +143,13 @@ RigidBoxライブラリは以上をできる限り手短に実演することで
 * Linux (Ubuntu)
   * Synaptic などで OpenGL 関連の dev パッケージが入手できます。
 
-==== GLUT
+==== SDL2
 
 * Windows
-  * FreeGLUT で動作確認しています。
-    http://freeglut.sourceforge.net/
+  * Use thirdparty/SDL2/GetDevPackage.cmd
     
 * Mac OS X
-  * OS に標準で同梱されています。
-
-* Linux (Ubuntu)
-  * Synaptic などで GLUT 関連の dev パッケージが入手できます。
+  * '$ brew install SDL2' may help
 
 
 === ライブラリのビルド
