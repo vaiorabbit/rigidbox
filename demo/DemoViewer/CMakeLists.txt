@@ -10,6 +10,13 @@ file( GLOB IMGUI_SRCS
 )
 source_group("imgui" FILES ${IMGUI_SRCS})
 
+# macOS
+if (CMAKE_HOST_APPLE)
+    list(APPEND CMAKE_FRAMEWORK_PATH "${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/SDL2")
+    find_library(SDL2_LIBRARY NAMES SDL2)
+    # find_package(SDL2 REQUIRED PATH ${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/SDL2)
+endif()
+
 add_library( DemoViewer ${DEMOVIEWER_LIB_HDRS} ${DEMOVIEWER_LIB_SRCS} ${IMGUI_SRCS} )
 
 # include/link path
@@ -17,6 +24,7 @@ include_directories(
     ${CMAKE_CURRENT_LIST_DIR}/../../include
     ${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/SDL2/include
     ${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/imgui/imgui
+	${CMAKE_CURRENT_LIST_DIR}/../../thirdparty/SDL2/SDL2.framework/Headers
 )
 link_directories(
     ${CMAKE_CURRENT_LIST_DIR}/../../lib

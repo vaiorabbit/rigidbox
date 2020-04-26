@@ -200,7 +200,7 @@ void Application::OnMouse()
         return;
     }
 
-    auto& button_map = [&](int32_t sdl_mouse_button) -> uint32_t {
+    auto button_map = [&](int32_t sdl_mouse_button) -> uint32_t {
                            switch (sdl_mouse_button) {
                            case SDL_BUTTON_LEFT:   return Camera::MouseButton_Left;   break;
                            case SDL_BUTTON_MIDDLE: return Camera::MouseButton_Middle; break;
@@ -209,7 +209,7 @@ void Application::OnMouse()
                            }
                        };
 
-    auto& state_map = [&](int32_t sdl_mouse_event) -> uint32_t {
+    auto state_map = [&](int32_t sdl_mouse_event) -> uint32_t {
                           switch (sdl_mouse_event) {
                           case SDL_MOUSEBUTTONDOWN: return Camera::MouseState_Down; break;
                           case SDL_MOUSEBUTTONUP:   return Camera::MouseState_Up;   break;
