@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 2.8.3 )
+cmake_minimum_required( VERSION 3.17.1 )
 project( RigidBoxDemo )
 
 if (CMAKE_HOST_WIN32)
@@ -28,6 +28,17 @@ elseif (CMAKE_HOST_APPLE)
 elseif (CMAKE_HOST_UNIX)
    set_property( TARGET DemoViewer_lib PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/lib/libDemoViewer.a)
 endif()
+
+
+find_package(OpenGL)
+
+# SDL2.framework (macOS)
+if (CMAKE_HOST_APPLE)
+    list(APPEND CMAKE_FRAMEWORK_PATH "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/SDL2")
+	find_path(SDL2_INCLUDE NAMES "SDL.h")
+    find_library(SDL2_LIBRARY NAMES SDL2)
+endif()
+
 
 add_subdirectory( DemoViewer )
 add_subdirectory( CollisionDemo )

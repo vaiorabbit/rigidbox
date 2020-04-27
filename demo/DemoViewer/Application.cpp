@@ -79,7 +79,7 @@ void Application::Initialize( int argc, char* argv[] )
     event_impl = new EventImpl;
     std::memset(&event_impl->event, 0, sizeof(SDL_Event));
 
-    SDL_Init( SDL_INIT_EVERYTHING );
+    SDL_Init( SDL_INIT_VIDEO );
     SDL_Quit();
 
     SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
@@ -88,7 +88,10 @@ void Application::Initialize( int argc, char* argv[] )
     SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 );
     SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 );
     SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
-    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
+    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
+    SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, 8 );
+    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 );
+    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 4 );
 
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
     SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
