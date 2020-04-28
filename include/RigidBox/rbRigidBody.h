@@ -197,7 +197,7 @@ public:
 
 
     rbVec3 AngularMomentum()
-        { return state.angular_velocity; }
+        { return state.angular_momentum; }
 
     void SetAngularMomentum( rbReal x, rbReal y, rbReal z )
         { state.angular_momentum.Set( x, y, z ); }
