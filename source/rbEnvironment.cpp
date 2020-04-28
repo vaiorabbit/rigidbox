@@ -86,15 +86,15 @@ void rbEnvironment::Update( rbReal dtime, int div )
 
     for ( rbs32 i = 0; i < div; ++i )
     {
-        for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
+        for (rbRigidBody* body : bodies)
         {
             // [LANG en] Cleanup temporal space used by collision response routine
             // [LANG ja] 衝突応答で利用する一時領域をゼロクリア
-            (*it_body)->ClearSolverWorkArea();
+            body->ClearSolverWorkArea();
 
             // [LANG en] The orientation of +it_body+ might be modified in the previous loop. So inertia tensor must be updated here.
             // [LANG ja] 位置が更新されているため慣性テンソルも更新
-            (*it_body)->UpdateInvInertiaWorld();
+            body->UpdateInvInertiaWorld();
         }
 
         // [LANG en] Collision detection
@@ -113,7 +113,7 @@ void rbEnvironment::Update( rbReal dtime, int div )
                 {
                     // [LANG en] No need to register if +contacts+ already have the same (or similar) contact point
                     // [LANG ja] すでに似た衝突点が検出済みである場合は登録しない
-                    ContactContainer::iterator it = std::find_if(contacts.begin(), contacts.end(),
+                    auto it = std::find_if(contacts.begin(), contacts.end(),
                         [this, &c](const rbContact& ci) {
                             return (c.Position - ci.Position).LengthSq() <= this->config.NearThreshold ? true : false;
                         });
@@ -125,45 +125,44 @@ void rbEnvironment::Update( rbReal dtime, int div )
 
         // [LANG en] Integration (Force -> Velocity)
         // [LANG ja] 積分 (力→速度)
-        for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
-            (*it_body)->UpdateVelocity( dt );
+        for (rbRigidBody* body : bodies)
+            body->UpdateVelocity( dt );
 
         // [LANG en] Collision response
         // [LANG ja] 衝突応答
-        ContactContainer::iterator it_contacts_end = contacts.end();
-        for ( ContactContainer::iterator it_contact = contacts.begin(); it_contact != it_contacts_end; ++it_contact )
-            solver.ApplyImpulse( &(*it_contact), dt );
+        for (rbContact& contact : contacts)
+            solver.ApplyImpulse( &contact, dt );
 
-        for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
-            (*it_body)->CorrectVelocity();
+        for (rbRigidBody* body : bodies)
+            body->CorrectVelocity();
 
         // [LANG en] Update sleep status
         // [LANG ja] スリープ状態の更新
-        for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
+        for (rbRigidBody* body : bodies)
         {
-            (*it_body)->UpdateSleepStatus( dt );
-            if ( (*it_body)->Sleeping() )
+            body->UpdateSleepStatus( dt );
+            if ( body->Sleeping() )
             {
-                (*it_body)->SetLinearVelocity( 0, 0, 0 );
+                body->SetLinearVelocity( 0, 0, 0 );
 
                 // [LANG en] Angular momentum is also cleared in this method
                 // [LANG ja] Angular Momentum も内部でゼロクリアされる
-                (*it_body)->SetAngularVelocity( 0, 0, 0 );
+                body->SetAngularVelocity( 0, 0, 0 );
             }
         }
 
         // [LANG en] Integration (Velocity -> Position)
         // [LANG ja] 積分 (速度→位置)
-        for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
-            (*it_body)->UpdatePosition( dt );
+        for (rbRigidBody* body : bodies)
+            body->UpdatePosition( dt );
     }
 
     // [LANG en] Postprocess
     // [LANG ja] 後処理
-    for ( it_body = bodies.begin(); it_body != it_bodies_end; ++it_body )
+    for (rbRigidBody* body : bodies)
     {
-        (*it_body)->SetForce( 0, 0, 0 );
-        (*it_body)->SetTorque( 0, 0, 0 );
+        body->SetForce( 0, 0, 0 );
+        body->SetTorque( 0, 0, 0 );
     }
 }
 
