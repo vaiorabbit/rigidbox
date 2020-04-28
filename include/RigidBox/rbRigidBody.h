@@ -82,7 +82,21 @@ public:
             , restitution_coefficient(rbReal(0.5))
             , friction_coefficient(rbReal(0.5))
             {}
-    };
+
+        void Set(rbReal mass, rbReal hx, rbReal hy, rbReal hz, rbReal restitution_coeff, rbReal friction_coeff)
+        {
+            half_extent.Set(hx, hy, hz);
+            restitution_coefficient = restitution_coeff;
+            friction_coefficient = friction_coeff;
+
+            inv_mass = rbReal(1) / mass;
+
+            rbMtx3 inertia(mass * (hy * hy + hz * hz) / rbReal(3), 0, 0,
+                0, mass * (hx * hx + hz * hz) / rbReal(3), 0,
+                0, 0, mass * (hx * hx + hy * hy) / rbReal(3));
+            inv_inertia = inertia.GetInverse();
+        }
+	};
 
     struct SleepStatus
     {

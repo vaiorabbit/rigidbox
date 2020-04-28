@@ -72,18 +72,9 @@ void rbRigidBody::AddForceAt( const rbVec3& dv, const rbVec3& at )
 }
 
 
-void rbRigidBody::SetShapeParameter( rbReal mass, rbReal hx, rbReal hy, rbReal hz, rbReal restitution_coeff, rbReal friction_coeff )
+void rbRigidBody::SetShapeParameter(rbReal mass, rbReal hx, rbReal hy, rbReal hz, rbReal restitution_coeff, rbReal friction_coeff)
 {
-    shape.half_extent.Set(hx, hy, hz);
-    shape.restitution_coefficient = restitution_coeff;
-    shape.friction_coefficient = friction_coeff;
-
-    shape.inv_mass = rbReal(1) / mass;
-
-    rbMtx3 inertia( mass * (hy*hy + hz*hz) / rbReal(3), 0, 0,
-                    0, mass * (hx*hx + hz*hz) / rbReal(3), 0,
-                    0, 0, mass * (hx*hx + hy*hy) / rbReal(3) );
-    shape.inv_inertia = inertia.GetInverse();
+    shape.Set(mass, hx, hy, hz, restitution_coeff, friction_coeff);
 }
 
 

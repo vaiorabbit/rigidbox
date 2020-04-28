@@ -1,3 +1,8 @@
+2020-04-29  vaiorabbit  <http://twitter.com/vaiorabbit>
+
+	* Add DominoDemo
+	* Refactor rbRigidBody::SetShapeParameter
+
 2020-04-26  vaiorabbit  <http://twitter.com/vaiorabbit>
 
 	* Removed GLUT dependency / Started using SDL2 instead

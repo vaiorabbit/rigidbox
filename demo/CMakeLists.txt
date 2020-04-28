@@ -42,4 +42,5 @@ endif()
 
 add_subdirectory( DemoViewer )
 add_subdirectory( CollisionDemo )
+add_subdirectory( DominoDemo )
 add_subdirectory( StackDemo )
