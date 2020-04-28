@@ -32,22 +32,14 @@ public:
             0.40f, 3.0f, 1.0f,
             0.0f, 0.5f);
 
-        box[0].EnableAttribute(rbRigidBody::Attribute_AutoSleep);
-        box[1].EnableAttribute(rbRigidBody::Attribute_AutoSleep);
-        box[2].EnableAttribute(rbRigidBody::Attribute_AutoSleep);
-        box[3].EnableAttribute(rbRigidBody::Attribute_AutoSleep);
-        box[4].EnableAttribute(rbRigidBody::Attribute_AutoSleep);
-
-        env.Register(&box[0]);
-        env.Register(&box[1]);
-        env.Register(&box[2]);
-        env.Register(&box[3]);
-        env.Register(&box[4]);
-
+        for (auto& b : box) {
+            b.EnableAttribute(rbRigidBody::Attribute_AutoSleep);
+            env.Register(&b);
+        }
         floor.SetShapeParameter(
             10000.0f,
             10.0f, 10.0f, 10.0f,
-            0.1f, 0.3f);
+            0.0f, 0.8f);
         floor.EnableAttribute(rbRigidBody::Attribute_Fixed);
         env.Register(&floor);
     }
@@ -55,38 +47,28 @@ public:
     virtual ~DominoDemo()
     {
         env.Unregister(&floor);
-        env.Unregister(&box[0]);
-        env.Unregister(&box[1]);
-        env.Unregister(&box[2]);
-        env.Unregister(&box[3]);
-        env.Unregister(&box[4]);
+        for (auto& b : box) {
+            env.Unregister(&b);
+        }
     }
 
     virtual void Update( float dt )
         {
-            const rbs32 div = 3;
-            const rbVec3 G( 0, 4*rbReal(-9.8), 0 );
-            box[0].SetForce(G);
-            box[1].SetForce(G);
-            box[2].SetForce(G);
-            box[3].SetForce(G);
-            box[4].SetForce(G);
+            const rbs32 div = 1;
+            const rbVec3 G( 0, 10*rbReal(-9.8), 0 );
+            for (auto& b : box) {
+                b.SetForce(G);
+            }
             env.Update( dt, div );
         }
 
     virtual void Reset()
     {
         env.ClearContacts();
-        box[0].ResetStatuses();
-        box[1].ResetStatuses();
-        box[2].ResetStatuses();
-        box[3].ResetStatuses();
-        box[4].ResetStatuses();
-        box[0].SetAngularMomentum(0, 0, 0);
-        box[1].SetAngularMomentum(0, 0, 0);
-        box[2].SetAngularMomentum(0, 0, 0);
-        box[3].SetAngularMomentum(0, 0, 0);
-        box[4].SetAngularMomentum(0, 0, 0);
+        for (auto& b : box) {
+            b.ResetStatuses();
+            b.SetAngularMomentum(0, 0, 0);
+        }
 
         box[0].SetPosition(rbReal(-10), rbSqrt(2), 0);
         box[0].SetOrientation(rbToRad(45), rbToRad(45), 0);
