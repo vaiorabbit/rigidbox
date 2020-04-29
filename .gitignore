@@ -1,6 +1,12 @@
 build
+demo/lib
+lib/
 thirdparty/SDL2/include/SDL*
 thirdparty/SDL2/include/*.h
 thirdparty/SDL2/lib/*dll
 thirdparty/SDL2/lib/*lib
+thirdparty/SDL2/tmp
+thirdparty/SDL2/SDL2.framework
+thirdparty/imgui/imgui
+thirdparty/imgui/imgui/tmp
 
