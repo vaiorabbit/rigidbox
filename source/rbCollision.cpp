@@ -95,35 +95,38 @@ static inline void ClosestPointOfSegments( const rbVec3 colliding_edge[2][2], rb
 
 
 // Separating axis identifier
-typedef enum {
-    SeparatingAxis_Box0XxBox1X = 0,
-    SeparatingAxis_Box0XxBox1Y,
-    SeparatingAxis_Box0XxBox1Z,
-    SeparatingAxis_Box0YxBox1X,
-    SeparatingAxis_Box0YxBox1Y,
-    SeparatingAxis_Box0YxBox1Z,
-    SeparatingAxis_Box0ZxBox1X,
-    SeparatingAxis_Box0ZxBox1Y,
-    SeparatingAxis_Box0ZxBox1Z,
+enum class SeparatingAxis : int {
+    Box0XxBox1X = 0,
+    Box0XxBox1Y,
+    Box0XxBox1Z,
+    Box0YxBox1X,
+    Box0YxBox1Y,
+    Box0YxBox1Z,
+    Box0ZxBox1X,
+    Box0ZxBox1Y,
+    Box0ZxBox1Z,
 
-    SeparatingAxis_Box0X,
-    SeparatingAxis_Box0Y,
-    SeparatingAxis_Box0Z,
-    SeparatingAxis_Box1X,
-    SeparatingAxis_Box1Y,
-    SeparatingAxis_Box1Z,
-} SeparatingAxis;
+    Box0X,
+    Box0Y,
+    Box0Z,
+    Box1X,
+    Box1Y,
+    Box1Z,
+
+    Count,
+    Unknown,
+} ;
 
 static const rbs32 ColumnIndices[9][2] = {
-    { 0, 0 }, // SeparatingAxis_Box0XxBox1X (== 0) -> box0->Orientation().Column(0) % box1->Orientation().Column(0)
-    { 0, 1 }, // SeparatingAxis_Box0XxBox1Y (== 1) -> box0->Orientation().Column(0) % box1->Orientation().Column(1)
-    { 0, 2 }, // SeparatingAxis_Box0XxBox1Z (== 2) -> :
-    { 1, 0 }, // SeparatingAxis_Box0YxBox1X (== 3)
-    { 1, 1 }, // SeparatingAxis_Box0YxBox1Y (== 4)
-    { 1, 2 }, // SeparatingAxis_Box0YxBox1Z (== 5)
-    { 2, 0 }, // SeparatingAxis_Box0ZxBox1X (== 6)
-    { 2, 1 }, // SeparatingAxis_Box0ZxBox1Y (== 7) -> :
-    { 2, 2 }, // SeparatingAxis_Box0ZxBox1Z (== 8) -> box0->Orientation().Column(2) % box1->Orientation().Column(2)
+    { 0, 0 }, // SeparatingAxis::Box0XxBox1X (== 0) -> box0->Orientation().Column(0) % box1->Orientation().Column(0)
+    { 0, 1 }, // SeparatingAxis::Box0XxBox1Y (== 1) -> box0->Orientation().Column(0) % box1->Orientation().Column(1)
+    { 0, 2 }, // SeparatingAxis::Box0XxBox1Z (== 2) -> :
+    { 1, 0 }, // SeparatingAxis::Box0YxBox1X (== 3)
+    { 1, 1 }, // SeparatingAxis::Box0YxBox1Y (== 4)
+    { 1, 2 }, // SeparatingAxis::Box0YxBox1Z (== 5)
+    { 2, 0 }, // SeparatingAxis::Box0ZxBox1X (== 6)
+    { 2, 1 }, // SeparatingAxis::Box0ZxBox1Y (== 7) -> :
+    { 2, 2 }, // SeparatingAxis::Box0ZxBox1Z (== 8) -> box0->Orientation().Column(2) % box1->Orientation().Column(2)
 };
 
 //
@@ -135,110 +138,134 @@ static const rbs32 ColumnIndices[9][2] = {
 // - Game Physics Engine Development [collide_fine.cpp]
 //
 
-#define SATx( enAxis ) \
-       current_axis = R[0].Column(ColumnIndices[enAxis][0]) % R[1].Column(ColumnIndices[enAxis][1]); \
-       if ( current_axis.LengthSq() >= RIGIDBOX_TOLERANCE )                                          \
-       {                                                                                             \
-           current_axis.Normalize();                                                                 \
-           current_penetration = OverlapAlongAxis( current_axis, h, RT, distance );                  \
-           if ( current_penetration <= RIGIDBOX_TOLERANCE )                                          \
-               return 0;                                                                             \
-           if ( current_penetration < best_penetration )                                             \
-           {                                                                                         \
-               best_penetration = current_penetration;                                               \
-               best_axis = current_axis;                                                             \
-               best_axis_id = enAxis;                                                                \
-           }                                                                                         \
-       }
-
-#define SAT0( enAxis ) \
-       current_axis = R[0].Column(enAxis-SeparatingAxis_Box0X);                 \
-       current_penetration = OverlapAlongAxis( current_axis, h, RT, distance ); \
-       if ( current_penetration <= RIGIDBOX_TOLERANCE )                         \
-           return 0;                                                            \
-       if ( current_penetration < best_penetration )                            \
-       {                                                                        \
-           best_penetration = current_penetration;                              \
-           best_axis = current_axis;                                            \
-           best_axis_id = enAxis;                                               \
-       }
-
-#define SAT1( enAxis ) \
-       current_axis = R[1].Column(enAxis-SeparatingAxis_Box1X);                 \
-       current_penetration = OverlapAlongAxis( current_axis, h, RT, distance ); \
-       if ( current_penetration <= RIGIDBOX_TOLERANCE )                         \
-           return 0;                                                            \
-       if ( current_penetration < best_penetration )                            \
-       {                                                                        \
-           best_penetration = current_penetration;                              \
-           best_axis = current_axis;                                            \
-           best_axis_id = enAxis;                                               \
-       }
-
-
-rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* contact_out )
-{
-    rbVec3 current_axis;
-    rbVec3 best_axis;
-    SeparatingAxis best_axis_id;
-    rbReal current_penetration;
+struct SATEvalStatus {
+    rbVec3 best_axis = rbVec3(0, 0, 0);
+    SeparatingAxis best_axis_id = SeparatingAxis::Unknown;
     // [LANG en] Current candidate value of penetration depth along +best_axis_id+.
     // [LANG ja] 軸 +best_axis_id+ に沿った貫通深度の候補値
     rbReal best_penetration = RIGIDBOX_REAL_MAX;
+};
 
+struct SATContext {
+    SeparatingAxis current_axis_id;
+    rbVec3 h[2];
+    rbMtx3 RT[2];
+    rbVec3 distance;
+};
+
+static inline bool SeparatedOnAxis(rbVec3&& axis, SATContext& ctx, SATEvalStatus& status)
+{
+    if (axis.LengthSq() >= RIGIDBOX_TOLERANCE)
+    {
+        axis.Normalize();
+        rbReal current_penetration = OverlapAlongAxis(axis, ctx.h, ctx.RT, ctx.distance);
+        if (current_penetration <= RIGIDBOX_TOLERANCE)
+            return true;
+        if (current_penetration < status.best_penetration)
+        {
+            status.best_penetration = current_penetration;
+            status.best_axis = axis;
+            status.best_axis_id = ctx.current_axis_id;
+        }
+    }
+    return false;
+}
+
+rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* contact_out )
+{
     rbVec3 h[2] = { box0->HalfExtent(), box1->HalfExtent() };
     rbMtx3 R[2] = { box0->Orientation(), box1->Orientation() };
     rbMtx3 RT[2] = { box0->OrientationTranspose(), box1->OrientationTranspose() };
     rbVec3 P[2] = { box0->Position(), box1->Position() };
     rbVec3 distance = P[1] - P[0];
 
+    SATContext ctx = {
+        SeparatingAxis::Unknown,
+        { h[0], h[1] },
+        { RT[0], RT[1] },
+        P[1] - P[0]
+    };
+
+    SATEvalStatus status;
+
     //
     // [LANG en] Separating-Axis Test
     // [LANG ja] 分離軸テスト
     //
+    bool separated = false;
 
     // [LANG en] SAT using local axes of Box0
     // [LANG ja] Box0 のローカル座標系の軸を利用した分離軸テスト
-    SAT0( SeparatingAxis_Box0X );
-    SAT0( SeparatingAxis_Box0Y );
-    SAT0( SeparatingAxis_Box0Z );
+    ctx.current_axis_id = SeparatingAxis::Box0X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2)), ctx, status);
+    if (separated) return 0;
 
     // [LANG en] SAT using local axes of Box1
     // [LANG ja] Box1 のローカル座標系の軸を利用した分離軸テスト
-    SAT1( SeparatingAxis_Box1X );
-    SAT1( SeparatingAxis_Box1Y );
-    SAT1( SeparatingAxis_Box1Z );
+    ctx.current_axis_id = SeparatingAxis::Box1X;
+    separated = SeparatedOnAxis(rbVec3(R[1].Column(0)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box1Y;
+    separated = SeparatedOnAxis(rbVec3(R[1].Column(1)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box1Z;
+    separated = SeparatedOnAxis(rbVec3(R[1].Column(2)), ctx, status);
+    if (separated) return 0;
 
     // [LANG en] SAT using cross product from the local axes of each boxes
     // [LANG ja] Box0 ・ Box1 それぞれのローカル座標系の軸から作成した分離軸でのテスト
-    SATx( SeparatingAxis_Box0XxBox1X );
-    SATx( SeparatingAxis_Box0XxBox1Y );
-    SATx( SeparatingAxis_Box0XxBox1Z );
-    SATx( SeparatingAxis_Box0YxBox1X );
-    SATx( SeparatingAxis_Box0YxBox1Y );
-    SATx( SeparatingAxis_Box0YxBox1Z );
-    SATx( SeparatingAxis_Box0ZxBox1X );
-    SATx( SeparatingAxis_Box0ZxBox1Y );
-    SATx( SeparatingAxis_Box0ZxBox1Z );
+    ctx.current_axis_id = SeparatingAxis::Box0XxBox1X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0) % R[1].Column(0)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0XxBox1Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0) % R[1].Column(1)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0XxBox1Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0) % R[1].Column(2)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0YxBox1X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1) % R[1].Column(0)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0YxBox1Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1) % R[1].Column(1)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0YxBox1Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1) % R[1].Column(2)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0ZxBox1X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2) % R[1].Column(0)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0ZxBox1Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2) % R[1].Column(1)), ctx, status);
+    if (separated) return 0;
+    ctx.current_axis_id = SeparatingAxis::Box0ZxBox1Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2) % R[1].Column(2)), ctx, status);
+    if (separated) return 0;
 
     //
     // [LANG en] No gap is found along any separating axes -> boxes are intersecting
     // [LANG ja] どの軸上でも隙間が確認できない⇒交差している
     //
 
-    switch ( best_axis_id )
+    switch ( status.best_axis_id )
     {
 
     // [LANG en] a vertex of Box1 is touching the face of Box0
     // [LANG ja] Box1 の頂点が Box0 の面と交差している場合
-    case SeparatingAxis_Box0X:
-    case SeparatingAxis_Box0Y:
-    case SeparatingAxis_Box0Z:
+    case SeparatingAxis::Box0X:
+    case SeparatingAxis::Box0Y:
+    case SeparatingAxis::Box0Z:
     {
-        contact_out->Normal = best_axis;
+        contact_out->Normal = status.best_axis;
         // [LANG en] By convention, +Normal+ should point from Box1 to Box0
         // [LANG ja] Box1 -> Box0 と向くように調整
-        if ( distance.Normalize() * best_axis >= 0 )
+        if ( ctx.distance.GetNormalized() * status.best_axis >= 0 )
             contact_out->Normal *= -1;
 
         contact_out->Position = FurthestVertexAlongAxis( contact_out->Normal, h[1], R[1], RT[1], P[1] );
@@ -247,14 +274,14 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
 
     // [LANG en] a vertex of Box0 is touching the face of Box1
     // [LANG ja] Box0 の頂点が Box1 の面と交差している場合
-    case SeparatingAxis_Box1X:
-    case SeparatingAxis_Box1Y:
-    case SeparatingAxis_Box1Z:
+    case SeparatingAxis::Box1X:
+    case SeparatingAxis::Box1Y:
+    case SeparatingAxis::Box1Z:
     {
-        contact_out->Normal = best_axis;
+        contact_out->Normal = status.best_axis;
         // [LANG en] By convention, +Normal+ should point from Box1 to Box0
         // [LANG ja] Box1 -> Box0 と向くように調整
-        if ( distance.Normalize() * best_axis >= 0 )
+        if ( ctx.distance.GetNormalized() * status.best_axis >= 0 )
             contact_out->Normal *= -1;
 
         contact_out->Position = FurthestVertexAlongAxis( -contact_out->Normal, h[0], R[0], RT[0], P[0] );
@@ -267,13 +294,13 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     {
         // [LANG en] Create Normal
         // [LANG ja] 法線の決定
-        contact_out->Normal = best_axis;
+        contact_out->Normal = status.best_axis;
         // [LANG en] By convention, +Normal+ should point from Box1 to Box0
         // [LANG ja] Box1 -> Box0 と向くように調整
-        if ( distance.Normalize() * best_axis >= 0 )
+        if ( ctx.distance.GetNormalized() * status.best_axis >= 0 )
         {
             contact_out->Normal *= -1;
-            best_axis *= -1;
+            status.best_axis *= -1;
         }
 
         // [LANG en] Estimate touching position
@@ -285,11 +312,11 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
         // [LANG ja] 2. 辺対辺の最近接点2個を求める
         // [LANG ja] 3. 上記の2個の点の中点を接触点の位置とする
 
-        const rbs32 *ColIdx = ColumnIndices[best_axis_id];
+        const rbs32 *ColIdx = ColumnIndices[static_cast<int>(status.best_axis_id)];
 
         const rbVec3 best_axis_boxlocal[2] = {
-            RT[0] * best_axis,
-            RT[1] * best_axis
+            RT[0] * status.best_axis,
+            RT[1] * status.best_axis
         };
 
         rbVec3 midpoint_on_colliding_edge[2] = {
@@ -334,7 +361,7 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
         // [LANG ja] contact_out->Position の調整
         // [LANG ja] - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする
         contact_out->Position = rbReal(0.5) * (point_out[0] + point_out[1]);
-        best_penetration *= rbReal(0.5);
+        status.best_penetration *= rbReal(0.5);
     }
     break;
     }
@@ -345,7 +372,7 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     contact_out->RelativeBodyPosition[1] = contact_out->Position - P[1];
     contact_out->Body[0] = box0;
     contact_out->Body[1] = box1;
-    contact_out->PenetrationDepth = best_penetration;
+    contact_out->PenetrationDepth = status.best_penetration;
 
     return 1;
 }
