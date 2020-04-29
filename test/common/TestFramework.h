@@ -137,7 +137,7 @@ namespace Test
                 test_cases.push_back( c );
             }
 
-        unsigned int CaseCount()
+        size_t CaseCount()
             {
                 return test_cases.size();
             }
