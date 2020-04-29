@@ -115,7 +115,8 @@ enum class SeparatingAxis : int {
 
     Count,
     Unknown,
-} ;
+    Start = Box0XxBox1X,
+};
 
 static const rbs32 ColumnIndices[9][2] = {
     { 0, 0 }, // SeparatingAxis::Box0XxBox1X (== 0) -> box0->Orientation().Column(0) % box1->Orientation().Column(0)
@@ -138,12 +139,24 @@ static const rbs32 ColumnIndices[9][2] = {
 // - Game Physics Engine Development [collide_fine.cpp]
 //
 
-struct SATEvalStatus {
-    rbVec3 best_axis = rbVec3(0, 0, 0);
-    SeparatingAxis best_axis_id = SeparatingAxis::Unknown;
+struct SATPenetration {
     // [LANG en] Current candidate value of penetration depth along +best_axis_id+.
     // [LANG ja] 軸 +best_axis_id+ に沿った貫通深度の候補値
-    rbReal best_penetration = RIGIDBOX_REAL_MAX;
+    rbReal depth;
+};
+
+struct SATEvalStatus {
+    rbVec3 best_axis;
+    SeparatingAxis best_axis_id;
+    SATPenetration penetration[static_cast<int>(SeparatingAxis::Count)];
+
+    void Clear() {
+        best_axis_id = SeparatingAxis::Start;
+        best_axis.SetZero();
+        for (auto& t : penetration) {
+            t.depth = RIGIDBOX_REAL_MAX;
+        }
+    }
 };
 
 struct SATContext {
@@ -159,11 +172,11 @@ static inline bool SeparatedOnAxis(rbVec3&& axis, SATContext& ctx, SATEvalStatus
     {
         axis.Normalize();
         rbReal current_penetration = OverlapAlongAxis(axis, ctx.h, ctx.RT, ctx.distance);
+        status.penetration[static_cast<int>(ctx.current_axis_id)].depth = current_penetration;
         if (current_penetration <= RIGIDBOX_TOLERANCE)
             return true;
-        if (current_penetration < status.best_penetration)
+        if (current_penetration < status.penetration[static_cast<int>(status.best_axis_id)].depth)
         {
-            status.best_penetration = current_penetration;
             status.best_axis = axis;
             status.best_axis_id = ctx.current_axis_id;
         }
@@ -187,6 +200,7 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     };
 
     SATEvalStatus status;
+    status.Clear();
 
     //
     // [LANG en] Separating-Axis Test
@@ -361,7 +375,7 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
         // [LANG ja] contact_out->Position の調整
         // [LANG ja] - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする
         contact_out->Position = rbReal(0.5) * (point_out[0] + point_out[1]);
-        status.best_penetration *= rbReal(0.5);
+        status.penetration[static_cast<int>(status.best_axis_id)].depth *= rbReal(0.5);
     }
     break;
     }
@@ -372,7 +386,7 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     contact_out->RelativeBodyPosition[1] = contact_out->Position - P[1];
     contact_out->Body[0] = box0;
     contact_out->Body[1] = box1;
-    contact_out->PenetrationDepth = status.best_penetration;
+    contact_out->PenetrationDepth = status.penetration[static_cast<int>(status.best_axis_id)].depth;
 
     return 1;
 }
