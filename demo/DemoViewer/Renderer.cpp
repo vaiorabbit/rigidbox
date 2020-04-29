@@ -218,16 +218,14 @@ void Renderer::RenderEnvironment( rbEnvironment* env )
     float mtxRT[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
     float mtxS[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 
-    rbu32 bodies_count = (rbs32)env->RigidBodyCount();
-    for ( rbu32 i = 0; i < bodies_count; ++i )
+    for ( rbRigidBody* box : env->RigidBodies() )
     {
-        rbRigidBody* box = env->RigidBody( i );
         if ( box->IsFixed() )
             continue;
 
-        rbVec3 pos = box->Position();
-        rbVec3 ext = box->HalfExtent();
-        rbMtx3 orn = box->Orientation();
+        const rbVec3& pos = box->Position();
+        const rbVec3& ext = box->HalfExtent();
+        const rbMtx3& orn = box->Orientation();
 
         mtxS[0] = 2.0f*ext.e[0];  mtxS[5] = 2.0f*ext.e[1];  mtxS[10] = 2.0f*ext.e[2];
 
@@ -250,11 +248,8 @@ void Renderer::RenderEnvironment( rbEnvironment* env )
         glPointSize( 5.0f );
         glColor3f( 1,0,0 );
         glBegin( GL_POINTS );
-        for ( rbu32 i = 0; i < env->ContactCount(); ++i )
-        {
-            rbContact* c = env->Contact( i );
-            rbVec3 p = c->Position;
-            glVertex3f( p.e[0], p.e[1], p.e[2] );
+        for (rbContact& c : env->Contacts()) {
+            glVertex3f( c.Position.e[0], c.Position.e[1], c.Position.e[2] );
         }
         glEnd();
         glPopAttrib();

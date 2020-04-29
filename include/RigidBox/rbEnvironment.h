@@ -24,6 +24,9 @@ public:
     ~rbEnvironment();
 
 
+    BodyPtrContainer RigidBodies()
+        { return bodies; }
+
     rbRigidBody* RigidBody( rbu32 index )
         { return bodies.at( index ); }
 
@@ -33,6 +36,9 @@ public:
     size_t RigidBodyCapacity()
         { return bodies.capacity(); }
 
+
+    ContactContainer Contacts()
+        { return contacts; }
 
     rbContact* Contact( rbu32 index )
         { return &contacts.at( index ); }
