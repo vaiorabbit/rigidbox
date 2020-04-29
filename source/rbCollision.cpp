@@ -2,6 +2,8 @@
 #include <RigidBox/rbRigidBody.h>
 #include <RigidBox/rbCollision.h>
 
+#include <algorithm>
+
 static inline rbReal HalfExtentOnAxis( const rbVec3& axis, const rbVec3& h, const rbMtx3& RT )
 {
     rbVec3 axis_boxlocal = RT * axis;
@@ -140,6 +142,7 @@ static const rbs32 ColumnIndices[9][2] = {
 //
 
 struct SATPenetration {
+    SeparatingAxis axis_id;
     // [LANG en] Current candidate value of penetration depth along +best_axis_id+.
     // [LANG ja] 軸 +best_axis_id+ に沿った貫通深度の候補値
     rbReal depth;
@@ -173,6 +176,7 @@ static inline bool SeparatedOnAxis(rbVec3&& axis, SATContext& ctx, SATEvalStatus
         axis.Normalize();
         rbReal current_penetration = OverlapAlongAxis(axis, ctx.h, ctx.RT, ctx.distance);
         status.penetration[static_cast<int>(ctx.current_axis_id)].depth = current_penetration;
+        status.penetration[static_cast<int>(ctx.current_axis_id)].axis_id = ctx.current_axis_id;
         if (current_penetration <= RIGIDBOX_TOLERANCE)
             return true;
         if (current_penetration < status.penetration[static_cast<int>(status.best_axis_id)].depth)
@@ -266,23 +270,38 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     // [LANG en] No gap is found along any separating axes -> boxes are intersecting
     // [LANG ja] どの軸上でも隙間が確認できない⇒交差している
     //
+#if 0
+    std::sort(status.penetration, status.penetration + static_cast<int>(SeparatingAxis::Count),
+        [](auto const& lhs, auto const& rhs) {
+            return lhs.depth < rhs.depth;
+        }
+    );
+
+    int best_count = std::count_if(status.penetration, status.penetration + static_cast<int>(SeparatingAxis::Count),
+        [&](auto& pen) {
+            return pen.depth == status.penetration[0].depth;
+        }
+    );
+#endif
+    // [LANG en] Create Normal
+    // [LANG ja] 法線の決定
+    contact_out->Normal = status.best_axis;
 
     switch ( status.best_axis_id )
     {
-
     // [LANG en] a vertex of Box1 is touching the face of Box0
     // [LANG ja] Box1 の頂点が Box0 の面と交差している場合
     case SeparatingAxis::Box0X:
     case SeparatingAxis::Box0Y:
     case SeparatingAxis::Box0Z:
     {
-        contact_out->Normal = status.best_axis;
         // [LANG en] By convention, +Normal+ should point from Box1 to Box0
         // [LANG ja] Box1 -> Box0 と向くように調整
-        if ( ctx.distance.GetNormalized() * status.best_axis >= 0 )
+        if ( ctx.distance.GetNormalized() * contact_out->Normal >= 0 )
             contact_out->Normal *= -1;
 
         contact_out->Position = FurthestVertexAlongAxis( contact_out->Normal, h[1], R[1], RT[1], P[1] );
+        contact_out->PenetrationDepth = status.penetration[static_cast<int>(status.best_axis_id)].depth;
     }
     break;
 
@@ -292,13 +311,13 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     case SeparatingAxis::Box1Y:
     case SeparatingAxis::Box1Z:
     {
-        contact_out->Normal = status.best_axis;
         // [LANG en] By convention, +Normal+ should point from Box1 to Box0
         // [LANG ja] Box1 -> Box0 と向くように調整
-        if ( ctx.distance.GetNormalized() * status.best_axis >= 0 )
+        if ( ctx.distance.GetNormalized() * contact_out->Normal >= 0 )
             contact_out->Normal *= -1;
 
         contact_out->Position = FurthestVertexAlongAxis( -contact_out->Normal, h[0], R[0], RT[0], P[0] );
+        contact_out->PenetrationDepth = status.penetration[static_cast<int>(status.best_axis_id)].depth;
     }
     break;
 
@@ -306,15 +325,11 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     // [LANG ja] Box0 と Box1 の辺同士が交差している場合
     default:
     {
-        // [LANG en] Create Normal
-        // [LANG ja] 法線の決定
-        contact_out->Normal = status.best_axis;
         // [LANG en] By convention, +Normal+ should point from Box1 to Box0
         // [LANG ja] Box1 -> Box0 と向くように調整
-        if ( ctx.distance.GetNormalized() * status.best_axis >= 0 )
+        if ( ctx.distance.GetNormalized() * contact_out->Normal >= 0 )
         {
             contact_out->Normal *= -1;
-            status.best_axis *= -1;
         }
 
         // [LANG en] Estimate touching position
@@ -329,8 +344,8 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
         const rbs32 *ColIdx = ColumnIndices[static_cast<int>(status.best_axis_id)];
 
         const rbVec3 best_axis_boxlocal[2] = {
-            RT[0] * status.best_axis,
-            RT[1] * status.best_axis
+            RT[0] * contact_out->Normal,
+            RT[1] * contact_out->Normal
         };
 
         rbVec3 midpoint_on_colliding_edge[2] = {
@@ -375,7 +390,7 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
         // [LANG ja] contact_out->Position の調整
         // [LANG ja] - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする
         contact_out->Position = rbReal(0.5) * (point_out[0] + point_out[1]);
-        status.penetration[static_cast<int>(status.best_axis_id)].depth *= rbReal(0.5);
+        contact_out->PenetrationDepth = status.penetration[static_cast<int>(status.best_axis_id)].depth * rbReal(0.5);
     }
     break;
     }
@@ -386,7 +401,6 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     contact_out->RelativeBodyPosition[1] = contact_out->Position - P[1];
     contact_out->Body[0] = box0;
     contact_out->Body[1] = box1;
-    contact_out->PenetrationDepth = status.penetration[static_cast<int>(status.best_axis_id)].depth;
 
     return 1;
 }
