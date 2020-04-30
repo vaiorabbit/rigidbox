@@ -198,27 +198,22 @@ void Application::OnKeyboard()
 
 void Application::OnMouse()
 {
-    // Mouse operations are permitted only when HUD is deactivated
-    if (event_impl->operating_hud) {
-        return;
-    }
+    auto button_map = [](uint32_t sdl_mouse_button) -> uint32_t {
+        switch (sdl_mouse_button) {
+        case SDL_BUTTON_LEFT:   return Camera::MouseButton_Left;   break;
+        case SDL_BUTTON_MIDDLE: return Camera::MouseButton_Middle; break;
+        case SDL_BUTTON_RIGHT:  return Camera::MouseButton_Right;  break;
+        default: return 0; break;
+        }
+    };
 
-    auto button_map = [&](int32_t sdl_mouse_button) -> uint32_t {
-                           switch (sdl_mouse_button) {
-                           case SDL_BUTTON_LEFT:   return Camera::MouseButton_Left;   break;
-                           case SDL_BUTTON_MIDDLE: return Camera::MouseButton_Middle; break;
-                           case SDL_BUTTON_RIGHT:  return Camera::MouseButton_Right;  break;
-                           default: return 0; break;
-                           }
-                       };
-
-    auto state_map = [&](int32_t sdl_mouse_event) -> uint32_t {
-                          switch (sdl_mouse_event) {
-                          case SDL_MOUSEBUTTONDOWN: return Camera::MouseState_Down; break;
-                          case SDL_MOUSEBUTTONUP:   return Camera::MouseState_Up;   break;
-                          default: return 0; break;
-                          }
-                      };
+    auto state_map = [](uint32_t sdl_mouse_event) -> uint32_t {
+        switch (sdl_mouse_event) {
+        case SDL_MOUSEBUTTONDOWN: return Camera::MouseState_Down; break;
+        case SDL_MOUSEBUTTONUP:   return Camera::MouseState_Up;   break;
+        default: return 0; break;
+        }
+    };
 
     switch (event_impl->event.type)
     {
@@ -226,7 +221,8 @@ void Application::OnMouse()
     case SDL_MOUSEBUTTONUP:
         // TODO handle event.state (SDL_PRESSED or SDL_RELEASED) and SDL_MouseWheelEvent
         if (event_impl->operating_hud) {
-            this->camera->SetMouseState( 0, 0, event_impl->event.button.x, event_impl->event.button.y );
+            // Mouse operations are permitted only when HUD is deactivated
+            this->camera->SetMouseState( Camera::MouseButton_Left|Camera::MouseButton_Middle|Camera::MouseButton_Right, Camera::MouseState_Up, event_impl->event.button.x, event_impl->event.button.y );
         } else {
             this->camera->SetMouseState( button_map(event_impl->event.button.button), state_map(event_impl->event.type), event_impl->event.button.x, event_impl->event.button.y );
         }
