@@ -3,6 +3,7 @@
 
 #include "rbTypes.h"
 #include "rbMath.h"
+#include <vector>
 
 struct rbContact
 {
@@ -49,6 +50,8 @@ class rbCollision
 public:
 
     static rbs32 Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* contact_out );
+
+    static rbs32 Detect(rbRigidBody* box0, rbRigidBody* box1, std::vector<rbContact>& contacts_out);
 };
 
 // RigidBox : A Small Library for 3D Rigid Body Physics Tutorial

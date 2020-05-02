@@ -109,8 +109,11 @@ void rbEnvironment::Update( rbReal dtime, int div )
                     continue;
 
                 rbContact c;
-                if ( rbCollision::Detect( *it_body0, *it_body1, &c ) > 0 )
+                if (rbCollision::Detect(*it_body0, *it_body1, &c) > 0)
+                //std::vector<rbContact> contacts_out;
+                //if (rbCollision::Detect(*it_body0, *it_body1, contacts_out) > 0)
                 {
+                    //rbContact& c = contacts_out[0];
                     // [LANG en] No need to register if +contacts+ already have the same (or similar) contact point
                     // [LANG ja] すでに似た衝突点が検出済みである場合は登録しない
                     auto it = std::find_if(contacts.begin(), contacts.end(),

@@ -22,17 +22,14 @@ static inline rbReal OverlapAlongAxis( const rbVec3& axis, rbVec3 h[2], rbMtx3 R
     return r0 + r1 - D;
 }
 
-static inline rbReal Sign( rbReal v )
-{
-    return v < -RIGIDBOX_TOLERANCE ? rbReal(-1) : rbReal(1);
-}
-
 // [LANG en] [NOTE] In the context of GJK algorithm, this function is 'support map function', that returns 'support point' of a box.
 // [LANG ja] [NOTE] この関数は GJK アルゴリズムでいうところのサポート写像で、出力として立方体の支点 (support point) を返すもの。
 // Ref.: Gino van den Bergen, Collision Detection in Interactive 3D Enviroments, 4.3.4 Support Mappings (pp.130-139)
 static inline rbVec3 FurthestVertexAlongAxis( const rbVec3& axis, const rbVec3& h, const rbMtx3& R, const rbMtx3& RT, const rbVec3& P )
 {
     rbVec3 axis_boxlocal = (RT * axis).Normalize();
+
+    auto Sign = [](rbReal v) -> rbReal { return v < -RIGIDBOX_TOLERANCE ? rbReal(-1) : rbReal(1); };
 
     rbVec3 FurthestVertexLocal( Sign(axis_boxlocal.x) * h.x, Sign(axis_boxlocal.y) * h.y, Sign(axis_boxlocal.z) * h.z );
 
@@ -142,6 +139,7 @@ static const rbs32 ColumnIndices[9][2] = {
 //
 
 struct SATPenetration {
+    rbVec3 axis;
     SeparatingAxis axis_id;
     // [LANG en] Current candidate value of penetration depth along +best_axis_id+.
     // [LANG ja] 軸 +best_axis_id+ に沿った貫通深度の候補値
@@ -177,6 +175,8 @@ static inline bool SeparatedOnAxis(rbVec3&& axis, SATContext& ctx, SATEvalStatus
         rbReal current_penetration = OverlapAlongAxis(axis, ctx.h, ctx.RT, ctx.distance);
         status.penetration[static_cast<int>(ctx.current_axis_id)].depth = current_penetration;
         status.penetration[static_cast<int>(ctx.current_axis_id)].axis_id = ctx.current_axis_id;
+        status.penetration[static_cast<int>(ctx.current_axis_id)].axis = axis;
+
         if (current_penetration <= RIGIDBOX_TOLERANCE)
             return true;
         if (current_penetration < status.penetration[static_cast<int>(status.best_axis_id)].depth)
@@ -403,6 +403,246 @@ rbs32 rbCollision::Detect( rbRigidBody* box0, rbRigidBody* box1, rbContact* cont
     contact_out->Body[1] = box1;
 
     return 1;
+}
+
+// Multiple version
+
+static bool CheckSeparationStatus(SATContext& ctx, rbMtx3 R[2], SATEvalStatus& status)
+{
+    bool separated = false;
+
+    // [LANG en] SAT using local axes of Box0
+    // [LANG ja] Box0 のローカル座標系の軸を利用した分離軸テスト
+    ctx.current_axis_id = SeparatingAxis::Box0X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2)), ctx, status);
+    if (separated) return true;
+
+    // [LANG en] SAT using local axes of Box1
+    // [LANG ja] Box1 のローカル座標系の軸を利用した分離軸テスト
+    ctx.current_axis_id = SeparatingAxis::Box1X;
+    separated = SeparatedOnAxis(rbVec3(R[1].Column(0)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box1Y;
+    separated = SeparatedOnAxis(rbVec3(R[1].Column(1)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box1Z;
+    separated = SeparatedOnAxis(rbVec3(R[1].Column(2)), ctx, status);
+    if (separated) return true;
+
+    // [LANG en] SAT using cross product from the local axes of each boxes
+    // [LANG ja] Box0 ・ Box1 それぞれのローカル座標系の軸から作成した分離軸でのテスト
+    ctx.current_axis_id = SeparatingAxis::Box0XxBox1X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0) % R[1].Column(0)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0XxBox1Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0) % R[1].Column(1)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0XxBox1Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(0) % R[1].Column(2)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0YxBox1X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1) % R[1].Column(0)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0YxBox1Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1) % R[1].Column(1)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0YxBox1Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(1) % R[1].Column(2)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0ZxBox1X;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2) % R[1].Column(0)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0ZxBox1Y;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2) % R[1].Column(1)), ctx, status);
+    if (separated) return true;
+    ctx.current_axis_id = SeparatingAxis::Box0ZxBox1Z;
+    separated = SeparatedOnAxis(rbVec3(R[0].Column(2) % R[1].Column(2)), ctx, status);
+    if (separated) return true;
+
+    return false;
+}
+
+static void BuildContact(SeparatingAxis axis_id, rbRigidBody* box0, rbRigidBody* box1, SATContext& ctx, SATPenetration& penetration, rbContact* contact_out)
+{
+    contact_out->Normal = penetration.axis; // [TODO] rethink to change here to penetration.axis.GetNormalized()
+
+    switch (axis_id)
+    {
+        // [LANG en] a vertex of Box1 is touching the face of Box0
+        // [LANG ja] Box1 の頂点が Box0 の面と交差している場合
+    case SeparatingAxis::Box0X:
+    case SeparatingAxis::Box0Y:
+    case SeparatingAxis::Box0Z:
+    {
+        // [LANG en] By convention, +Normal+ should point from Box1 to Box0
+        // [LANG ja] Box1 -> Box0 と向くように調整
+        if (ctx.distance.GetNormalized() * contact_out->Normal >= 0)
+            contact_out->Normal *= -1;
+
+        contact_out->Position = FurthestVertexAlongAxis(contact_out->Normal, ctx.h[1], box1->Orientation(), ctx.RT[1], box1->Position());
+        contact_out->PenetrationDepth = penetration.depth;
+    }
+    break;
+
+    // [LANG en] a vertex of Box0 is touching the face of Box1
+    // [LANG ja] Box0 の頂点が Box1 の面と交差している場合
+    case SeparatingAxis::Box1X:
+    case SeparatingAxis::Box1Y:
+    case SeparatingAxis::Box1Z:
+    {
+        // [LANG en] By convention, +Normal+ should point from Box1 to Box0
+        // [LANG ja] Box1 -> Box0 と向くように調整
+        if (ctx.distance.GetNormalized() * contact_out->Normal >= 0)
+            contact_out->Normal *= -1;
+
+        contact_out->Position = FurthestVertexAlongAxis(-contact_out->Normal, ctx.h[0], box0->Orientation(), ctx.RT[0], box0->Position());
+        contact_out->PenetrationDepth = penetration.depth;
+    }
+    break;
+
+    // [LANG en] Both boxes are touching with each other's edge
+    // [LANG ja] Box0 と Box1 の辺同士が交差している場合
+    default:
+    {
+        rbMtx3 R[2] = { box0->Orientation(), box1->Orientation() };
+
+        // [LANG en] By convention, +Normal+ should point from Box1 to Box0
+        // [LANG ja] Box1 -> Box0 と向くように調整
+        if (ctx.distance.GetNormalized() * contact_out->Normal >= 0)
+        {
+            contact_out->Normal *= -1;
+        }
+
+        // [LANG en] Estimate touching position
+        // [LANG en] 1. identify touching edges
+        // [LANG en] 2. calculate closest points on these edges
+        // [LANG en] 3. take the midpoint of the points as the touching position
+        // [LANG ja] あとはひたすら接触点の位置の推定
+        // [LANG ja] 1. 接触状態にある辺2本を特定
+        // [LANG ja] 2. 辺対辺の最近接点2個を求める
+        // [LANG ja] 3. 上記の2個の点の中点を接触点の位置とする
+
+        const rbs32* ColIdx = ColumnIndices[static_cast<int>(axis_id)];
+
+        const rbVec3 best_axis_boxlocal[2] = {
+            ctx.RT[0] * contact_out->Normal,
+            ctx.RT[1] * contact_out->Normal
+        };
+
+        rbVec3 midpoint_on_colliding_edge[2] = {
+            rbVec3(0, 0, 0),
+            rbVec3(0, 0, 0)
+        };
+
+        for (int i = 0; i < 3; ++i)
+        {
+            if (i != ColIdx[0])
+                midpoint_on_colliding_edge[0].e[i] =
+                best_axis_boxlocal[0].e[i] < 0 ? ctx.h[0].e[i] : -ctx.h[0].e[i];
+
+            if (i != ColIdx[1])
+                midpoint_on_colliding_edge[1].e[i] =
+                best_axis_boxlocal[1].e[i] > 0 ? ctx.h[1].e[i] : -ctx.h[1].e[i];
+        }
+
+        // [LANG en] convert to the world coordinate system
+        // [LANG ja] ワールド座標系での位置へ変換
+        midpoint_on_colliding_edge[0] = R[0] * midpoint_on_colliding_edge[0] + box0->Position();
+        midpoint_on_colliding_edge[1] = R[1] * midpoint_on_colliding_edge[1] + box1->Position();
+
+        // [LANG en] The end points of a colliding edge can be found at positions h (and -h) away from the midpoint.
+        // [LANG ja] 中点がわかればそこから軸方向に幅 h (および -h) だけ伸ばした位置が衝突している辺を表す両端となる
+        const rbVec3 colliding_edge[2][2] = {
+            {
+                midpoint_on_colliding_edge[0] + ctx.h[0].e[ColIdx[0]] * R[0].Column(ColIdx[0]),
+                midpoint_on_colliding_edge[0] - ctx.h[0].e[ColIdx[0]] * R[0].Column(ColIdx[0]),
+            },
+            {
+                midpoint_on_colliding_edge[1] + ctx.h[1].e[ColIdx[1]] * R[1].Column(ColIdx[1]),
+                midpoint_on_colliding_edge[1] - ctx.h[1].e[ColIdx[1]] * R[1].Column(ColIdx[1]),
+            },
+        };
+
+        rbVec3 point_out[2];
+        ClosestPointOfSegments(colliding_edge, point_out);
+
+        // [LANG en] Tweak contact_out->Position
+        // [LANG en] - take the average of point_out[0] and point_out[1], and halve +best_penetration+, or
+        // [LANG ja] contact_out->Position の調整
+        // [LANG ja] - point_out[0] と point_out[1] の平均にして best_penetration を 1/2 とする
+        contact_out->Position = rbReal(0.5) * (point_out[0] + point_out[1]);
+        contact_out->PenetrationDepth = penetration.depth * rbReal(0.5);
+    }
+    break;
+    }
+
+    // [LANG en] Collect type-independent (vertex-face or edge-edge) data
+    // [LANG ja] 接触のタイプ(頂点対面 or 辺対辺)に依存しない情報はここで整理
+    contact_out->RelativeBodyPosition[0] = contact_out->Position - box0->Position();
+    contact_out->RelativeBodyPosition[1] = contact_out->Position - box1->Position();
+    contact_out->Body[0] = box0;
+    contact_out->Body[1] = box1;
+
+}
+
+// static
+rbs32 rbCollision::Detect(rbRigidBody* box0, rbRigidBody* box1, std::vector<rbContact>& contacts_out)
+{
+    rbVec3 h[2] = { box0->HalfExtent(), box1->HalfExtent() };
+    rbMtx3 R[2] = { box0->Orientation(), box1->Orientation() };
+    rbMtx3 RT[2] = { box0->OrientationTranspose(), box1->OrientationTranspose() };
+    rbVec3 P[2] = { box0->Position(), box1->Position() };
+
+    SATContext ctx = {
+        SeparatingAxis::Unknown,
+        { h[0], h[1] },
+        { RT[0], RT[1] },
+        P[1] - P[0]
+    };
+
+    SATEvalStatus status;
+    status.Clear();
+
+    //
+    // [LANG en] Separating-Axis Test
+    // [LANG ja] 分離軸テスト
+    //
+
+    if (CheckSeparationStatus(ctx, R, status)) {
+        return 0;
+    }
+
+    //
+    // [LANG en] No gap is found along any separating axes -> boxes are intersecting
+    // [LANG ja] どの軸上でも隙間が確認できない⇒交差している
+    //
+#if 1
+    std::stable_sort(status.penetration, status.penetration + static_cast<int>(SeparatingAxis::Count),
+        [](auto const& lhs, auto const& rhs) {
+            return lhs.depth < rhs.depth;
+        }
+    );
+
+    int best_count = std::count_if(status.penetration, status.penetration + static_cast<int>(SeparatingAxis::Count),
+        [&](auto& pen) {
+            return pen.depth == status.penetration[0].depth;
+        }
+    );
+#endif
+    rbContact contact_out;
+    for (int i = 0; i < best_count; ++i) {
+        //BuildContact(status.best_axis_id, box0, box1, ctx, status.penetration[static_cast<int>(status.best_axis_id)], &contact_out);
+        BuildContact(status.penetration[i].axis_id, box0, box1, ctx, status.penetration[i], &contact_out);
+        contacts_out.emplace_back(contact_out);
+    }
+
+    return static_cast<rbs32>(contacts_out.size());
 }
 
 // RigidBox : A Small Library for 3D Rigid Body Physics Tutorial
