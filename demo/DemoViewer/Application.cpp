@@ -5,10 +5,14 @@
 # include <GL/GL.h>
 #elif defined(__APPLE__)
 # include <OpenGL/gl.h>
+#else
+# include <GL/gl.h>
 #endif
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdexcept>
+#include <string>
 #include "Application.h"
 #include "Camera.h"
 #include "Renderer.h"
@@ -16,7 +20,7 @@
 #include "ScreenShot.h"
 
 #include <imgui.h>
-#include <imgui_impl_sdl.h>
+#include <imgui_impl_sdl3.h>
 #include <imgui_impl_opengl2.h>
 
 struct Application::WindowImpl
@@ -64,8 +68,10 @@ Application::~Application()
 
     delete screenshot_session;
 
-    renderer->Finalize();
-    delete renderer;
+    if (renderer) {
+        renderer->Finalize();
+        delete renderer;
+    }
 
     delete camera;
 
@@ -77,27 +83,51 @@ void Application::Initialize( int argc, char* argv[] )
 {
     window_impl = new WindowImpl;
     event_impl = new EventImpl;
-    std::memset(&event_impl->event, 0, sizeof(SDL_Event));
 
-    SDL_Init( SDL_INIT_VIDEO );
-    SDL_Quit();
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
+        throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
+    }
 
-    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-    SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
-    SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 );
-    SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 );
-    SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 );
-    SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 );
-    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
-    SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, 8 );
+    const auto set_gl_attribute = [](SDL_GLAttr attribute, int value) {
+        if (!SDL_GL_SetAttribute(attribute, value)) {
+            const std::string error = SDL_GetError();
+            SDL_Quit();
+            throw std::runtime_error("SDL_GL_SetAttribute failed: " + error);
+        }
+    };
+    set_gl_attribute(SDL_GL_DOUBLEBUFFER, 1);
+    set_gl_attribute(SDL_GL_ACCELERATED_VISUAL, 1);
+    set_gl_attribute(SDL_GL_RED_SIZE, 8);
+    set_gl_attribute(SDL_GL_GREEN_SIZE, 8);
+    set_gl_attribute(SDL_GL_BLUE_SIZE, 8);
+    set_gl_attribute(SDL_GL_ALPHA_SIZE, 8);
+    set_gl_attribute(SDL_GL_DEPTH_SIZE, 24);
+    set_gl_attribute(SDL_GL_STENCIL_SIZE, 8);
+    set_gl_attribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    set_gl_attribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    set_gl_attribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
-    SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY );
+    SDL_Window* window = SDL_CreateWindow("", window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    if (!window) {
+        const std::string error = SDL_GetError();
+        SDL_Quit();
+        throw std::runtime_error("SDL_CreateWindow failed: " + error);
+    }
 
-    SDL_Window* window = SDL_CreateWindow( "", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
     SDL_GLContext context = SDL_GL_CreateContext( window );
-    SDL_GL_MakeCurrent(window, context);
+    if (!context) {
+        const std::string error = SDL_GetError();
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        throw std::runtime_error("SDL_GL_CreateContext failed: " + error);
+    }
+    if (!SDL_GL_MakeCurrent(window, context)) {
+        const std::string error = SDL_GetError();
+        SDL_GL_DestroyContext(context);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        throw std::runtime_error("SDL_GL_MakeCurrent failed: " + error);
+    }
     SDL_GL_SetSwapInterval(1);
 
     // Setup Dear ImGui context
@@ -106,8 +136,22 @@ void Application::Initialize( int argc, char* argv[] )
     // ImGuiIO& io = ImGui::GetIO(); (void)io;
     ImGui::StyleColorsDark();
 
-    ImGui_ImplSDL2_InitForOpenGL(window, context);
-    ImGui_ImplOpenGL2_Init();
+    if (!ImGui_ImplSDL3_InitForOpenGL(window, context)) {
+        const std::string error = SDL_GetError();
+        ImGui::DestroyContext();
+        SDL_GL_DestroyContext(context);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        throw std::runtime_error("ImGui_ImplSDL3_InitForOpenGL failed: " + error);
+    }
+    if (!ImGui_ImplOpenGL2_Init()) {
+        ImGui_ImplSDL3_Shutdown();
+        ImGui::DestroyContext();
+        SDL_GL_DestroyContext(context);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        throw std::runtime_error("ImGui_ImplOpenGL2_Init failed");
+    }
 
     window_impl->window = window;
     window_impl->context = context;
@@ -146,10 +190,10 @@ void Application::UnregisterScene()
 void Application::Finalize()
 {
     ImGui_ImplOpenGL2_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
+    ImGui_ImplSDL3_Shutdown();
     ImGui::DestroyContext();
 
-    SDL_GL_DeleteContext( window_impl->context );
+    SDL_GL_DestroyContext( window_impl->context );
     SDL_DestroyWindow( window_impl->window );
     SDL_Quit();
 }
@@ -159,10 +203,10 @@ void Application::OnKeyboard()
     // ESCAPE or Q -> quit application
     switch (event_impl->event.type)
     {
-    case SDL_KEYDOWN:
-        switch (event_impl->event.key.keysym.sym) {
+    case SDL_EVENT_KEY_DOWN:
+        switch (event_impl->event.key.key) {
         case SDLK_ESCAPE:
-        case SDLK_q: /* fallthrough */
+        case SDLK_Q: /* fallthrough */
             event_impl->running = false;
             break;
         }
@@ -173,21 +217,21 @@ void Application::OnKeyboard()
     if (!event_impl->operating_hud) {
         switch (event_impl->event.type)
         {
-        case SDL_KEYDOWN:
-            switch (event_impl->event.key.keysym.sym) {
+        case SDL_EVENT_KEY_DOWN:
+            switch (event_impl->event.key.key) {
             case SDLK_SPACE:
                 this->pause = !this->pause;
                 break;
-            case SDLK_r: // Reset
+            case SDLK_R: // Reset
                 this->scene->Reset();
                 this->pause = true;
                 this->one_step = false;
                 break;
-            case SDLK_s:
+            case SDLK_S:
                 this->one_step = true;
                 this->pause = true;
                 break;
-            case SDLK_c:
+            case SDLK_C:
                 this->capture_screen = true;
                 break;
             }
@@ -209,16 +253,16 @@ void Application::OnMouse()
 
     auto state_map = [](uint32_t sdl_mouse_event) -> uint32_t {
         switch (sdl_mouse_event) {
-        case SDL_MOUSEBUTTONDOWN: return Camera::MouseState_Down; break;
-        case SDL_MOUSEBUTTONUP:   return Camera::MouseState_Up;   break;
+        case SDL_EVENT_MOUSE_BUTTON_DOWN: return Camera::MouseState_Down; break;
+        case SDL_EVENT_MOUSE_BUTTON_UP:   return Camera::MouseState_Up;   break;
         default: return 0; break;
         }
     };
 
     switch (event_impl->event.type)
     {
-    case SDL_MOUSEBUTTONDOWN: /* fallthrouth */
-    case SDL_MOUSEBUTTONUP:
+    case SDL_EVENT_MOUSE_BUTTON_DOWN: /* fallthrouth */
+    case SDL_EVENT_MOUSE_BUTTON_UP:
         // TODO handle event.state (SDL_PRESSED or SDL_RELEASED) and SDL_MouseWheelEvent
         if (event_impl->operating_hud) {
             // Mouse operations are permitted only when HUD is deactivated
@@ -241,7 +285,7 @@ void Application::OnMotion()
 
     switch (event_impl->event.type)
     {
-    case SDL_MOUSEMOTION:
+    case SDL_EVENT_MOUSE_MOTION:
         this->camera->UpdateFromMouseMotion( event_impl->event.motion.x, event_impl->event.motion.y );
         break;
     default:
@@ -271,8 +315,7 @@ void Application::Resize(int32_t width, int32_t height)
 
 void Application::OnReshape()
 {
-    if (event_impl->event.type == SDL_WINDOWEVENT &&
-        event_impl->event.window.event == SDL_WINDOWEVENT_RESIZED) {
+    if (event_impl->event.type == SDL_EVENT_WINDOW_RESIZED) {
         if (window_impl->window == SDL_GetWindowFromID(event_impl->event.window.windowID)) {
             Resize(event_impl->event.window.data1, event_impl->event.window.data2);
         }
@@ -310,7 +353,7 @@ void Application::OnDisplay()
     glPopAttrib();
 
     ImGui_ImplOpenGL2_NewFrame();
-    ImGui_ImplSDL2_NewFrame(window_impl->window);
+    ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
     ImGui::Begin("RigidBox Console");
     ImGui::Text("Simulation Control");
@@ -358,8 +401,9 @@ void Application::OnIdle()
 
 bool Application::MainLoop()
 {
-    while( SDL_PollEvent( &event_impl->event ) )
+    while (SDL_PollEvent(&event_impl->event))
     {
+        ImGui_ImplSDL3_ProcessEvent(&event_impl->event);
         OnKeyboard();
         OnMouse();
         OnMotion();

@@ -99,88 +99,40 @@ So RigidBox is suitable for programmers who wants to grasp the essencial parts o
 * CMake can generate new project files / build scripts for your environment.
 * http://www.cmake.org/
 
-Move to the 'build' directory. Then type:
+From the repository root, configure and build the library, tests, and demos:
 
-* Windows
-  * > cmake -G "Visual Sutdio 2019" ..
-
-* Mac OS X
-  * $ cmake -G "Xcode" ..
-
-* Linux (Ubuntu)
-  * $ cmake -G "Unix Makefiles" ..
+* `cmake -S . -B build`
+* `cmake --build build --config Release`
+* `ctest --test-dir build -C Release --output-on-failure`
 
 ==== OpenGL
 
 * Windows
   * gl.h : Install Windows SDK.
-    http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=8279
       
 * Mac OS X
   * No setup required. The OS provides OpenGL-related headers/libraries
     as its standard feature.
 
 * Linux (Ubuntu)
-  * You can install OpenGL-related dev packages via package managers like
-    Synaptic, etc.
+  * You can install OpenGL-related dev packages via package managers.
 
-==== SDL2
+==== SDL3
 
-* Windows
-  * Use thirdparty/SDL2/GetDevPackage.cmd
-    
-* Mac OS X
-  * '$ brew install SDL2' may help
+When demos are enabled, CMake fetches and builds SDL 3.4.20 and Dear ImGui
+1.91.9b. The SDL version is pinned in demo/CMakeLists.txt. OpenGL development
+headers and libraries are required.
 
 
-=== Building the library
+=== Tests and samples
 
-* Windows
-  * Use RigidBox.sln in the 'build' directory.
-  * You'll get 'RigidBox.lib' at lib/Debug and lib/Release.
-
-* Mac OS X
-  * Use RigidBox.xcodeproj in the 'build' directory.
-  * You'll get RigidBox.dylib at:
-    ex.) /Users/[your account name]/Library/Developer/Xcode/DerivedData/ [new line] 
-            RigidBoxDemo-egcoaigiqbgfwabxxwpufqtasprk/Build/Products/Debug/RigidBox.dylib
-
-* Linux (Ubuntu)
-  * Just 'make' at the 'build' directory.
-  * You'll get libRigidBox.a at lib/ .
-
-
-
-== Samples
-
-* See CollisionDemo and StackDemo in the 'demo' directory.
-
-* DemoViewer is the framework for sample programs (based on OpenGL/GLUT).
-
-* Building the samples
-
-  * If you need to create new build script, use CMake at the 'build' directory.
-
-  * Windows
-    * Use RigidBoxDemo.sln in the 'build' directory.
-      Check CollisionDemo (or StackDemo) is specified as 'Startup Project'.
-
-  * Mac OS X
-    * Use RigidBoxDemo.xcworkspace in the 'build' directory.
-      Check CollisionDemo (or StackDemo) is selected as the current Scheme.
-
-  * Linux (Ubuntu)
-    * Just 'make' at the 'build' directory.
-      Executables will be made as build/CollisionDemo/CollisionDemo, etc.
+* CTest runs CollisionTest, IntegrationTest, SolverTest, and EnvTest.
+* CollisionDemo, DominoDemo, and StackDemo are included in the root build.
+* To omit demos, pass `-DRIGIDBOX_BUILD_DEMOS=OFF` when configuring.
 
 
 
 == Support for code reading
-
-[2012-03-24] (work-in-progress) implementation notes are available at:
-
-  http://code.google.com/p/rigidbox/wiki/ImplementationNotes
-  http://code.google.com/p/rigidbox/w/list
 
 Readers are assumed to have basic knowledge/experience of these subjects:
 

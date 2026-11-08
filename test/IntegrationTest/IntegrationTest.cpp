@@ -25,5 +25,5 @@ main( int argc, char** argv )
     for ( int i = 0; i < sizeof(tc)/sizeof(tc[0]); ++i )
         delete tc[i];
 
-    return 0;
+    return Test::ManagerInstance().FailCount() == 0 ? 0 : 1;
 }

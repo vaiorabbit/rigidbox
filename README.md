@@ -8,6 +8,20 @@
 
 RigidBox is a small library for demonstrating how to implement 3D rigid body physics engine.
 
+## Build
+
+Configure from the repository root to generate the library, tests, and SDL3 demos
+in one build:
+
+```sh
+cmake -S . -B build
+cmake --build build --config Release
+ctest --test-dir build -C Release --output-on-failure
+```
+
+The demo build fetches SDL 3.4.20 and Dear ImGui 1.91.9b through CMake
+FetchContent. Set `-DRIGIDBOX_BUILD_DEMOS=OFF` to build only the library and tests.
+
 ## Demo ##
 
 A scene from StackDemo.cpp:

@@ -1,20 +1,29 @@
-cmake_minimum_required( VERSION 3.17.1 )
-project( RigidBox )
+cmake_minimum_required(VERSION 3.17)
+project(RigidBox LANGUAGES CXX)
 
-file( GLOB RIGIDBOX_LIB_HDRS "${CMAKE_CURRENT_LIST_DIR}/include/RigidBox/*.h" )
-file( GLOB RIGIDBOX_LIB_SRCS "${CMAKE_CURRENT_LIST_DIR}/source/*.cpp" )
-add_library( RigidBox ${RIGIDBOX_LIB_HDRS} ${RIGIDBOX_LIB_SRCS} )
-include_directories( ${CMAKE_CURRENT_LIST_DIR}/include )
+include(CTest)
 
-set( LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_LIST_DIR}/lib )
+file(GLOB RIGIDBOX_LIB_HDRS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/RigidBox/*.h")
+file(GLOB RIGIDBOX_LIB_SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
 
+add_library(RigidBox ${RIGIDBOX_LIB_HDRS} ${RIGIDBOX_LIB_SRCS})
+target_include_directories(RigidBox PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set_target_properties(RigidBox PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
 
-if ( MSVC )
-    # "The file contains a character that cannot be represented in the current code page (...)"
+if(MSVC)
     target_compile_options(RigidBox PRIVATE "/wd4819")
+endif()
+
+option(RIGIDBOX_BUILD_DEMOS "Build the SDL3 demos" ON)
+
+if(BUILD_TESTING)
+    add_subdirectory(test)
+endif()
+
+if(RIGIDBOX_BUILD_DEMOS)
+    add_subdirectory(demo)
 endif()

@@ -117,94 +117,39 @@ RigidBoxライブラリは以上をできる限り手短に実演することで
 * http://www.cmake.org/
 * 各自の環境に合わせたビルドスクリプトの生成に利用します。
 
-コマンドライン上で build ディレクトリへ移動し、以下のコマンドを実行してください。
+以下を実行ししてください。
 
-* Windows
-  * > cmake -G "Visual Sutdio 2019" ..
-    Visual Studio ソリューションファイル (RigidBox.sln) が生成されます。
-
-* Mac OS X
-  * $ cmake -G "Xcode" ..
-    Xcode プロジェクト (RigidBox.xcodeproj) が生成されます。
-
-* Linux (Ubuntu)
-  * $ cmake -G "Unix Makefiles" ..
-    Makefile が生成されます。
+* cmake -S . -B build
+* cmake --build build --config Release
+* ctest --test-dir build -C Release --output-on-failure
 
 ==== OpenGL
 
 * Windows
-  * gl.h : Windows SDK をインストールしてください。
-    http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=8279
+  * gl.h : Windows SDK に同梱されています。
       
 * Mac OS X
   * OS に標準で同梱されています。
 
 * Linux (Ubuntu)
-  * Synaptic などで OpenGL 関連の dev パッケージが入手できます。
+  * OpenGL 関連の dev パッケージが入手できます。
 
-==== SDL2
+==== SDL3
 
-* Windows
-  * Use thirdparty/SDL2/GetDevPackage.cmd
-    
-* Mac OS X
-  * '$ brew install SDL2' may help
+SDL 3.4.20 と Dear ImGui 1.91.9b を CMake を取得してビルドします。
+SDL のバージョンは demo/CMakeLists.txt で固定しています。
+OpenGL の開発用ヘッダーとライブラリが必要です。
 
 
-=== ライブラリのビルド
+=== テストとデモ
 
-* Windows
-  * build ディレクトリ以下にある RigidBox.sln を利用します。
-  * RigidBox.lib が生成されます。場所は lib/Debug および lib/Release です。
-
-* Mac OS X
-  * build ディレクトリ以下にある RigidBox.xcodeproj を利用します。
-  * RigidBox.dylib が生成されます。場所はユーザーによって異なります。
-    例) /Users/[ユーザー名]/Library/Developer/Xcode/DerivedData/ [改行] 
-            RigidBoxDemo-egcoaigiqbgfwabxxwpufqtasprk/Build/Products/Debug/RigidBox.dylib
-
-* Linux (Ubuntu)
-  * build ディレクトリで make を実行してください。
-  * libRigidBox.a が生成されます。場所は lib/ です。
-
-
-
-== デモの実行
-
-* demo ディレクトリにある CollisionDemo および StackDemo を
-  参照してください。
-
-* DemoViewer は OpenGL/GLUT を利用したデモプログラム用の
-  フレームワークです。
-
-* デモプログラムのビルド方法はライブラリの手順に準じます。
-
-  * ビルドスクリプトの生成は demo/build ディレクトリで
-    cmake を実行することで行います。
-
-  * Windows
-    * build ディレクトリ以下にある RigidBoxDemo.sln を利用します。
-      CollisionDemo または StackDemo がスタートアッププロジェクトに
-      指定されていることを確認してください。
-
-  * Mac OS X
-    * build ディレクトリ以下にある RigidBoxDemo.xcworkspace を利用します。
-      現在選択中の Scheme が CollisionDemo または StackDemo と
-      なっていることを確認してください。
-
-  * Linux (Ubuntu)
-    * build ディレクトリで make を実行してください。
-      実行ファイルは build/CollisionDemo/CollisionDemo などです。
+* CTest から CollisionTest、IntegrationTest、SolverTest、EnvTest を実行できます。
+* CollisionDemo、DominoDemo、StackDemo は同じルートビルドに含まれます。
+* デモをビルドしない場合は `-DRIGIDBOX_BUILD_DEMOS=OFF` を指定してください。
 
 
 
 == ソースコードの読みかた
-
-[2012-03-24] 下記 URL でドキュメントを整備中です。
-
-  http://code.google.com/p/rigidbox/wiki/ImplementationNotes
-  http://code.google.com/p/rigidbox/w/list
 
 前提知識は以下の通りです：
 

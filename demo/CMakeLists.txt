@@ -1,46 +1,47 @@
-cmake_minimum_required( VERSION 3.17.1 )
-project( RigidBoxDemo )
+include(FetchContent)
+find_package(OpenGL REQUIRED)
 
-if (CMAKE_HOST_WIN32)
-    include_external_msproject( RigidBox ${CMAKE_CURRENT_LIST_DIR}/../build/RigidBox.vcxproj )
-endif()
+set(RIGIDBOX_SDL_VERSION "3.4.20")
+set(SDL_SHARED ON)
+set(SDL_STATIC OFF)
+set(SDL_INSTALL OFF)
+set(SDL_TESTS OFF)
+set(SDL_EXAMPLES OFF)
 
-# IMPORTED variable :
-# http://www.cmake.org/Wiki/CMake_2.6_Notes
-add_library( RigidBox_lib STATIC IMPORTED )
-if (CMAKE_HOST_WIN32)
-   set_property( TARGET RigidBox_lib PROPERTY IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/../lib/Debug/RigidBox.lib)
-   set_property( TARGET RigidBox_lib PROPERTY IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/../lib/Release/RigidBox.lib)
-elseif (CMAKE_HOST_APPLE)
-   set_property( TARGET RigidBox_lib PROPERTY IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/../lib/Debug/libRigidBox.a)
-   set_property( TARGET RigidBox_lib PROPERTY IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/../lib/Release/libRigidBox.a)
-elseif (CMAKE_HOST_UNIX)
-   set_property( TARGET RigidBox_lib PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/../lib/libRigidBox.a)
-endif()
+FetchContent_Declare(SDL3
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    GIT_TAG "release-${RIGIDBOX_SDL_VERSION}"
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(SDL3)
 
-add_library( DemoViewer_lib STATIC IMPORTED )
-if (CMAKE_HOST_WIN32)
-   set_property( TARGET DemoViewer_lib PROPERTY IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/lib/Debug/DemoViewer.lib)
-   set_property( TARGET DemoViewer_lib PROPERTY IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/lib/Release/DemoViewer.lib)
-elseif (CMAKE_HOST_APPLE)
-   set_property( TARGET DemoViewer_lib PROPERTY IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/lib/Debug/libDemoViewer.a)
-   set_property( TARGET DemoViewer_lib PROPERTY IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/lib/Release/libDemoViewer.a)
-elseif (CMAKE_HOST_UNIX)
-   set_property( TARGET DemoViewer_lib PROPERTY IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/lib/libDemoViewer.a)
-endif()
+FetchContent_Declare(imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG v1.91.9b
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(imgui)
 
+add_library(RigidBoxImGui STATIC
+    "${imgui_SOURCE_DIR}/imgui.cpp"
+    "${imgui_SOURCE_DIR}/imgui_draw.cpp"
+    "${imgui_SOURCE_DIR}/imgui_tables.cpp"
+    "${imgui_SOURCE_DIR}/imgui_widgets.cpp"
+    "${imgui_SOURCE_DIR}/backends/imgui_impl_opengl2.cpp"
+    "${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp"
+)
+target_include_directories(RigidBoxImGui PUBLIC
+    "${imgui_SOURCE_DIR}"
+    "${imgui_SOURCE_DIR}/backends"
+)
+target_link_libraries(RigidBoxImGui PRIVATE SDL3::SDL3)
+set_target_properties(RigidBoxImGui PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED YES
+    CXX_EXTENSIONS NO
+)
 
-find_package(OpenGL)
-
-# SDL2.framework (macOS)
-if (CMAKE_HOST_APPLE)
-    list(APPEND CMAKE_FRAMEWORK_PATH "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/SDL2")
-	find_path(SDL2_INCLUDE NAMES "SDL.h")
-    find_library(SDL2_LIBRARY NAMES SDL2)
-endif()
-
-
-add_subdirectory( DemoViewer )
-add_subdirectory( CollisionDemo )
-add_subdirectory( DominoDemo )
-add_subdirectory( StackDemo )
+add_subdirectory(DemoViewer)
+add_subdirectory(CollisionDemo)
+add_subdirectory(DominoDemo)
+add_subdirectory(StackDemo)

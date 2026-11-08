@@ -1,6 +1,8 @@
+.vs/*
 build
 demo/lib
 lib/
+private/
 thirdparty/SDL2/include/SDL*
 thirdparty/SDL2/include/*.h
 thirdparty/SDL2/lib/*dll
